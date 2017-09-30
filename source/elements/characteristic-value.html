@@ -1,0 +1,55 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="characteristic-value">
+    <template>
+        <style>
+            :host {
+                display: flex;
+                padding: 0 4.2rem;
+            }
+
+            :host(:nth-child(even)) {
+                background-color: rgba(196, 196, 196, 0.05);
+            }
+
+            :host(:nth-child(odd)) {
+                background-color: rgba(196, 196, 196, 0.1);
+            }
+
+            p {
+                margin: 0;
+                font-size: 1.4rem;
+                line-height: 3.2rem;
+            }
+
+            .label {
+                margin-right: auto;
+            }
+
+            .value {
+                font-family: "Source Code Pro", monospace;
+                font-weight: 600;
+            }
+        </style>
+
+        <p class="label">[[label]]</p>
+        <p class="value">[[value]]</p>
+    </template>
+
+    <script>
+        class CharacteristicValue extends Polymer.Element {
+            static get is() {
+                return 'characteristic-value';
+            }
+
+            static get properties() {
+                return {
+                    label: String,
+                    value: String
+                };
+            }
+        }
+
+        customElements.define(CharacteristicValue.is, CharacteristicValue);
+    </script>
+</dom-module>
