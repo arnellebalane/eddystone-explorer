@@ -1,4 +1,5 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-if.html">
 
 <dom-module id="beacon-connection">
     <template>
@@ -16,6 +17,7 @@
             }
 
             button {
+                flex-shrink: 0;
                 padding: 0 1.6rem;
                 border: none;
                 border-radius: 1.6rem;
@@ -44,8 +46,22 @@
             }
         </style>
 
-        <p>[[statusMessage]]</p>
-        <button class$="[[status]]">[[buttonText]]</button>
+        <template is="dom-if" if="{{isEqual(status, 'default')}}">
+            <p>Not connected to any beacon</p>
+            <button class="default" on-click="onRequestDevice">Scan for beacons</button>
+        </template>
+        <template is="dom-if" if="{{isEqual(status, 'scanning')}}">
+            <p>Searching for beacons with support for the Eddystone Configuration Service</p>
+            <button class="scanning">Scanning...</button>
+        </template>
+        <template is="dom-if" if="{{isEqual(status, 'connecting')}}">
+            <p>Connecting to "[[beacon.name]]"</p>
+            <button class="connecting">Connecting...</button>
+        </template>
+        <template is="dom-if" if="{{isEqual(status, 'connected')}}">
+            <p>Connected to "[[beacon.name]]"</p>
+            <button class="connected" on-click="onDisconnect">Disconnect</button>
+        </template>
     </template>
 
     <script>
@@ -61,14 +77,6 @@
                         value: 'default',
                         notify: true
                     },
-                    statusMessage: {
-                        type: String,
-                        computed: 'computeStatusMessage(status)'
-                    },
-                    buttonText: {
-                        type: String,
-                        computed: 'computeButtonText(status)'
-                    },
                     beacon: {
                         type: Object,
                         value: null,
@@ -77,24 +85,33 @@
                 };
             }
 
-            computeStatusMessage(status) {
-                switch (status) {
-                    case 'default': return 'Not connected to any beacon';
-                    case 'scanning': return 'Searching for beacons with support for the Eddystone Configuration Service';
-                    case 'connecting': return `Connecting to "${this.beacon.name}"`;
-                    case 'connected': return `Connected to "${this.beacon.name}"`;
-                    default: return '';
-                }
+            isEqual(property, value) {
+                return property === value;
             }
 
-            computeButtonText(status) {
-                switch (status) {
-                    case 'default': return 'Scan for beacons';
-                    case 'scanning': return 'Scanning...';
-                    case 'connecting': return 'Connecting...';
-                    case 'connected': return 'Disconnect';
-                    default: return '';
+            async onRequestDevice() {
+                const EDDYSTONE_SERVICE_UUID = 'a3c87500-8ed3-4bdf-8a39-a01bebede295';
+
+                this.status = 'scanning';
+                try {
+                    this.beacon = await navigator.bluetooth.requestDevice({
+                        filters: [
+                            { services: [ EDDYSTONE_SERVICE_UUID ] }
+                        ]
+                    });
+                } catch (error) {
+                    this.status = 'default';
+                    return;
                 }
+
+                this.status = 'connecting';
+                await this.beacon.gatt.connect();
+                this.status = 'connected';
+            }
+
+            async onDisconnect(e) {
+                await this.beacon.gatt.disconnect();
+                this.status = 'default';
             }
         }
 
