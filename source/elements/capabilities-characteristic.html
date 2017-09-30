@@ -1,0 +1,33 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="characteristic-styles.html">
+<link rel="import" href="characteristic-value.html">
+
+<dom-module id="capabilities-characteristic">
+    <template>
+        <style include="characteristic-styles"></style>
+
+        <section>
+            <header>
+                <span>1</span>
+                <h2>Capabilities</h2>
+            </header>
+            <characteristic-value label="Spec version" value="0"></characteristic-value>
+            <characteristic-value label="Max supported total slots" value="3"></characteristic-value>
+            <characteristic-value label="Max supported EID slots" value="0"></characteristic-value>
+            <characteristic-value label="Variable ADV interval supported?" value="true"></characteristic-value>
+            <characteristic-value label="Variable Tx power supported?" value="false"></characteristic-value>
+            <characteristic-value label="Supported frame types"></characteristic-value>
+            <characteristic-value label="Supported radio Tx power"></characteristic-value>
+        </section>
+    </template>
+
+    <script>
+        class CapabilitiesCharacteristic extends Polymer.Element {
+            static get is() {
+                return 'capabilities-characteristic';
+            }
+        }
+
+        customElements.define(CapabilitiesCharacteristic.is, CapabilitiesCharacteristic);
+    </script>
+</dom-module>
