@@ -94,24 +94,27 @@
 
                 this.status = 'scanning';
                 try {
-                    this.beacon = await navigator.bluetooth.requestDevice({
+                    const beacon = await navigator.bluetooth.requestDevice({
                         filters: [
                             { services: [ EDDYSTONE_SERVICE_UUID ] }
                         ]
                     });
-                } catch (error) {
-                    this.status = 'default';
-                    return;
-                }
 
-                this.status = 'connecting';
-                await this.beacon.gatt.connect();
-                this.status = 'connected';
+                    this.status = 'connecting';
+                    await beacon.gatt.connect();
+
+                    this.status = 'connected';
+                    this.beacon = beacon;
+                } catch (error) {
+                    console.error(error);
+                    this.status = 'default';
+                }
             }
 
             async onDisconnect(e) {
                 await this.beacon.gatt.disconnect();
                 this.status = 'default';
+                this.beacon = null;
             }
         }
 
