@@ -29,7 +29,7 @@
         <div class="wrapper">
             <header>
                 <h2>Explore and configure your beacons that support Eddystone, an open beacon format from Google.</h2>
-                <beacon-connection beacon="{{beacon}}"></beacon-connection>
+                <beacon-connection service="{{service}}"></beacon-connection>
             </header>
         </div>
     </template>
@@ -42,15 +42,15 @@
 
             static get properties() {
                 return {
-                    beacon: {
+                    service: {
                         type: Object,
-                        observer: 'observeBeacon'
+                        observer: 'observeService'
                     }
                 };
             }
 
-            observeBeacon(beacon) {
-                console.log(beacon);
+            observeService(service) {
+                console.log(service);
             }
         }
 
