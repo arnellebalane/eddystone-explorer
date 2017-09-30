@@ -1,0 +1,103 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="beacon-connection">
+    <template>
+        <style>
+            :host {
+                display: flex;
+                align-items: center;
+            }
+
+            p {
+                max-width: 25rem;
+                margin: 0;
+                font-size: 1.2rem;
+                opacity: 0.75;
+            }
+
+            button {
+                padding: 0 1.6rem;
+                border: none;
+                border-radius: 1.6rem;
+                margin-left: auto;
+                font: inherit;
+                font-size: 1.4rem;
+                font-weight: 600;
+                line-height: 3.2rem;
+                color: #fff;
+                background-color: #1e88e5;
+            }
+
+            button.scanning,
+            button.connecting {
+                opacity: 0.25;
+                pointer-events: none;
+            }
+
+            button.connecting {
+                color: #333;
+                background-color: #ffc107;
+            }
+
+            button.connected {
+                background-color: #f44336;
+            }
+        </style>
+
+        <p>[[statusMessage]]</p>
+        <button class$="[[status]]">[[buttonText]]</button>
+    </template>
+
+    <script>
+        class BeaconConnection extends Polymer.Element {
+            static get is() {
+                return 'beacon-connection';
+            }
+
+            static get properties() {
+                return {
+                    status: {
+                        type: String,
+                        value: 'default',
+                        notify: true
+                    },
+                    statusMessage: {
+                        type: String,
+                        computed: 'computeStatusMessage(status)'
+                    },
+                    buttonText: {
+                        type: String,
+                        computed: 'computeButtonText(status)'
+                    },
+                    beacon: {
+                        type: Object,
+                        value: null,
+                        notify: true
+                    }
+                };
+            }
+
+            computeStatusMessage(status) {
+                switch (status) {
+                    case 'default': return 'Not connected to any beacon';
+                    case 'scanning': return 'Searching for beacons with support for the Eddystone Configuration Service';
+                    case 'connecting': return `Connecting to "${this.beacon.name}"`;
+                    case 'connected': return `Connected to "${this.beacon.name}"`;
+                    default: return '';
+                }
+            }
+
+            computeButtonText(status) {
+                switch (status) {
+                    case 'default': return 'Scan for beacons';
+                    case 'scanning': return 'Scanning...';
+                    case 'connecting': return 'Connecting...';
+                    case 'connected': return 'Disconnect';
+                    default: return '';
+                }
+            }
+        }
+
+        customElements.define(BeaconConnection.is, BeaconConnection);
+    </script>
+</dom-module>
