@@ -49,6 +49,8 @@
         <template is="dom-if" if="[[isDefinedAndNotBoolean(value)]]">
             <p class="value">[[value]]</p>
         </template>
+
+        <slot></slot>
     </template>
 
     <script>

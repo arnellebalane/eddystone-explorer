@@ -1,6 +1,8 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="characteristic-styles.html">
 <link rel="import" href="characteristic-value.html">
+<link rel="import" href="items-availability.html">
+<link rel="import" href="value-with-unit.html">
 
 <dom-module id="capabilities-characteristic">
     <template>
@@ -16,8 +18,19 @@
             <characteristic-value label="Max supported EID slots" value="0"></characteristic-value>
             <characteristic-value label="Variable ADV interval supported?" value="true"></characteristic-value>
             <characteristic-value label="Variable Tx power supported?" value="false"></characteristic-value>
-            <characteristic-value label="Supported frame types"></characteristic-value>
-            <characteristic-value label="Supported radio Tx power"></characteristic-value>
+            <characteristic-value label="Supported frame types">
+                <items-availability>
+                    <p class="available">UID</p>
+                    <p class="available">URL</p>
+                    <p class="unavailable">TLM</p>
+                    <p class="unavailable">EID</p>
+                </items-availability>
+            </characteristic-value>
+            <characteristic-value label="Supported radio Tx power">
+                <value-with-unit unit="dBm">
+                    <p>-100, -60, 0, 20</p>
+                </value-with-unit>
+            </characteristic-value>
         </section>
     </template>
 

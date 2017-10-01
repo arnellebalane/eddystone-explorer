@@ -1,0 +1,47 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="items-availability">
+    <template>
+        <style>
+            :host {
+                display: flex;
+                font-family: var(--monospace-font);
+            }
+
+            ::slotted(*) {
+                margin: 0;
+                font-size: 1.4rem;
+            }
+
+            ::slotted(:not(:first-child)) {
+                margin-left: 0.4rem;
+            }
+
+            ::slotted(:not(:last-child)) {
+                margin-right: 0.4rem;
+            }
+
+            ::slotted(.available) {
+                font-weight: 600;
+                color: var(--success-color);
+            }
+
+            ::slotted(.unavailable) {
+                color: var(--danger-color);
+                opacity: 0.5;
+            }
+        </style>
+
+        <slot></slot>
+    </template>
+
+    <script>
+        class ItemsAvailability extends Polymer.Element {
+            static get is() {
+                return 'items-availability';
+            }
+        }
+
+        customElements.define(ItemsAvailability.is, ItemsAvailability);
+    </script>
+</dom-module>
