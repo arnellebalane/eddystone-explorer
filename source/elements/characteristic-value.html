@@ -1,4 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-if.html">
+<link rel="import" href="../mixins/comparison-mixin.html">
 
 <dom-module id="characteristic-value">
     <template>
@@ -34,11 +36,23 @@
         </style>
 
         <p class="label">[[label]]</p>
-        <p class="value">[[value]]</p>
+
+        <template is="dom-if" if="[[isBoolean(value)]]">
+            <template is="dom-if" if="[[value]]">
+                <img src$="[[resolveUrl('../images/check.png')]]" alt="true">
+            </template>
+            <template is="dom-if" if="[[!value]]">
+                <img src$="[[resolveUrl('../images/close.png')]]" alt="false">
+            </template>
+        </template>
+
+        <template is="dom-if" if="[[isDefinedAndNotBoolean(value)]]">
+            <p class="value">[[value]]</p>
+        </template>
     </template>
 
     <script>
-        class CharacteristicValue extends Polymer.Element {
+        class CharacteristicValue extends ComparisonMixin(Polymer.Element) {
             static get is() {
                 return 'characteristic-value';
             }
@@ -46,8 +60,12 @@
             static get properties() {
                 return {
                     label: String,
-                    value: String
+                    value: Object
                 };
+            }
+
+            isDefinedAndNotBoolean(value) {
+                return this.isDefined(value) && !this.isBoolean(value);
             }
         }
 
