@@ -1,4 +1,5 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="characteristic-styles.html">
 <link rel="import" href="characteristic-template.html">
 <link rel="import" href="characteristic-value.html">
 <link rel="import" href="items-availability.html">
@@ -6,6 +7,8 @@
 
 <dom-module id="capabilities-characteristic">
     <template>
+        <style include="characteristic-styles"></style>
+
         <characteristic-template number="1" name="Capabilities">
             <section>
                 <characteristic-value label="Spec version" value="0"></characteristic-value>
