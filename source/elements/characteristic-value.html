@@ -39,10 +39,10 @@
 
         <template is="dom-if" if="[[isBoolean(value)]]">
             <template is="dom-if" if="[[value]]">
-                <img src$="[[resolveUrl('../images/check.png')]]" alt="true">
+                <img src$="[[importPath]]../images/check.png" alt="true">
             </template>
             <template is="dom-if" if="[[!value]]">
-                <img src$="[[resolveUrl('../images/close.png')]]" alt="false">
+                <img src$="[[importPath]]../images/close.png" alt="false">
             </template>
         </template>
 
