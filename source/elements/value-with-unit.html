@@ -1,0 +1,44 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="value-with-unit">
+    <template>
+        <style>
+            :host {
+                display: flex;
+                font-family: var(--monospace-font);
+                font-size: 1.4rem;
+                font-weight: 600;
+            }
+
+            ::slotted(*) {
+                margin: 0;
+            }
+
+            span {
+                display: inline-block;
+                margin-left: 0.8rem;
+                font-weight: 400;
+                opacity: 0.5;
+            }
+        </style>
+
+        <slot></slot>
+        <span>[[unit]]</span>
+    </template>
+
+    <script>
+        class ValueWithUnit extends Polymer.Element {
+            static get is() {
+                return 'value-with-unit';
+            }
+
+            static get properties() {
+                return {
+                    unit: String
+                };
+            }
+        }
+
+        customElements.define(ValueWithUnit.is, ValueWithUnit);
+    </script>
+</dom-module>
