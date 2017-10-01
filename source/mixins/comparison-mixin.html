@@ -1,0 +1,21 @@
+<script>
+    function ComparisonMixin(SuperClass) {
+        return class extends SuperClass {
+            isEqual(a, b) {
+                return a === b;
+            }
+
+            isTrue(value) {
+                return value === true;
+            }
+
+            isFalse(value) {
+                return value === false;
+            }
+
+            isBoolean(value) {
+                return typeof value === 'boolean';
+            }
+        }
+    }
+</script>
