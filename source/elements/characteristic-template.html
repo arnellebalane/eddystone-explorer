@@ -1,0 +1,70 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="characteristic-template">
+    <template>
+        <style>
+            article {
+                padding-bottom: 1.6rem;
+                background-color: rgba(255, 255, 255, 0.05);
+            }
+
+            header {
+                padding: 1.6rem 4.2rem;
+                position: relative;
+            }
+
+            header h2 {
+                margin: 0;
+                font-size: 1.6rem;
+                font-weight: 400;
+            }
+
+            header span {
+                position: absolute;
+                top: 1.8rem;
+                right: calc(100% - 4.2rem + 0.8rem);
+                font-family: var(--monospace-font);
+                font-size: 1.2rem;
+                opacity: 0.5;
+            }
+
+            header span::before {
+                content: "#";
+            }
+
+            ::slotted(section:not(:first-of-type)) {
+                margin-top: 1.6rem;
+            }
+
+            ::slotted(section:not(:last-of-type)) {
+                margin-bottom: 1.6rem;
+            }
+        </style>
+
+        <article>
+            <header>
+                <span>[[number]]</span>
+                <h2>[[name]]</h2>
+            </header>
+
+            <slot></slot>
+        </article>
+    </template>
+
+    <script>
+        class CharacteristicTemplate extends Polymer.Element {
+            static get is() {
+                return 'characteristic-template';
+            }
+
+            static get properties() {
+                return {
+                    number: Number,
+                    name: String
+                };
+            }
+        }
+
+        customElements.define(CharacteristicTemplate.is, CharacteristicTemplate);
+    </script>
+</dom-module>

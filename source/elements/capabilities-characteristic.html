@@ -1,37 +1,33 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
-<link rel="import" href="characteristic-styles.html">
+<link rel="import" href="characteristic-template.html">
 <link rel="import" href="characteristic-value.html">
 <link rel="import" href="items-availability.html">
 <link rel="import" href="value-with-unit.html">
 
 <dom-module id="capabilities-characteristic">
     <template>
-        <style include="characteristic-styles"></style>
-
-        <section>
-            <header>
-                <span>1</span>
-                <h2>Capabilities</h2>
-            </header>
-            <characteristic-value label="Spec version" value="0"></characteristic-value>
-            <characteristic-value label="Max supported total slots" value="3"></characteristic-value>
-            <characteristic-value label="Max supported EID slots" value="0"></characteristic-value>
-            <characteristic-value label="Variable ADV interval supported?" value="true"></characteristic-value>
-            <characteristic-value label="Variable Tx power supported?" value="false"></characteristic-value>
-            <characteristic-value label="Supported frame types">
-                <items-availability>
-                    <p available>UID</p>
-                    <p available>URL</p>
-                    <p>TLM</p>
-                    <p>EID</p>
-                </items-availability>
-            </characteristic-value>
-            <characteristic-value label="Supported radio Tx power">
-                <value-with-unit unit="dBm">
-                    <p>-100, -60, 0, 20</p>
-                </value-with-unit>
-            </characteristic-value>
-        </section>
+        <characteristic-template number="1" name="Capabilities">
+            <section>
+                <characteristic-value label="Spec version" value="0"></characteristic-value>
+                <characteristic-value label="Max supported total slots" value="3"></characteristic-value>
+                <characteristic-value label="Max supported EID slots" value="0"></characteristic-value>
+                <characteristic-value label="Variable ADV interval supported?" value="true"></characteristic-value>
+                <characteristic-value label="Variable Tx power supported?" value="false"></characteristic-value>
+                <characteristic-value label="Supported frame types">
+                    <items-availability>
+                        <p available>UID</p>
+                        <p available>URL</p>
+                        <p>TLM</p>
+                        <p>EID</p>
+                    </items-availability>
+                </characteristic-value>
+                <characteristic-value label="Supported radio Tx power">
+                    <value-with-unit unit="dBm">
+                        <p>-100, -60, 0, 20</p>
+                    </value-with-unit>
+                </characteristic-value>
+            </section>
+        </characteristic-template>
     </template>
 
     <script>
