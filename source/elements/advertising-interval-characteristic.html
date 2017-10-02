@@ -1,0 +1,49 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-if.html">
+<link rel="import" href="characteristic-styles.html">
+<link rel="import" href="characteristic-template.html">
+<link rel="import" href="characteristic-value.html">
+<link rel="import" href="value-with-unit.html">
+
+<dom-module id="advertising-interval-characteristic">
+    <template>
+        <style include="characteristic-styles"></style>
+
+        <characteristic-template number="3" name="Advertising Interval">
+            <section>
+                <characteristic-value label="Advertising Interval">
+                    <value-with-unit unit="ms">
+                        <p>700</p>
+                    </value-with-unit>
+                </characteristic-value>
+            </section>
+            <section class="padded">
+                <template is="dom-if" if="[[isVariableAdvIntervalSupported]]">
+                    <p>Writing a value to this characteristic will set the advertising interval for <strong>Slot #1</strong>.</p>
+                </template>
+                <template is="dom-if" if="[[!isVariableAdvIntervalSupported]]">
+                    <p class="warning">Because <strong>variable ADV interval</strong> is not supported, writing a value to this characteristic will set the advertising interval for all slots.</p>
+                </template>
+            </section>
+        </characteristic-template>
+    </template>
+
+    <script>
+        class AdvertisingIntervalCharacteristic extends Polymer.Element {
+            static get is() {
+                return 'advertising-interval-characteristic';
+            }
+
+            static get properties() {
+                return {
+                    isVariableAdvIntervalSupported: {
+                        type: Boolean,
+                        value: true
+                    }
+                };
+            }
+        }
+
+        customElements.define(AdvertisingIntervalCharacteristic.is, AdvertisingIntervalCharacteristic);
+    </script>
+</dom-module>
