@@ -1,6 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="characteristic-styles.html">
 <link rel="import" href="characteristic-template.html">
+<link rel="import" href="tab-selection.html">
 
 <dom-module id="active-slot-characteristic">
     <template>
@@ -8,7 +9,11 @@
 
         <characteristic-template number="2" name="Active Slot">
             <section padded>
-                <p>test</p>
+                <tab-selection selected="0" selected-class="success-btn" on-value-changed="onActiveSlotChanged">
+                    <button value="1">Slot #1</button>
+                    <button value="2">Slot #2</button>
+                    <button value="3">Slot #3</button>
+                </tab-selection>
             </section>
         </characteristic-template>
     </template>
@@ -17,6 +22,10 @@
         class ActiveSlotCharacteristic extends Polymer.Element {
             static get is() {
                 return 'active-slot-characteristic';
+            }
+
+            onActiveSlotChanged(e) {
+                console.log(e.detail.value);
             }
         }
 
