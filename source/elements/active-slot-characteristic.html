@@ -9,7 +9,7 @@
 
         <characteristic-template number="2" name="Active Slot">
             <section class="padded">
-                <tab-selection selected="0" selected-class="success" on-value-changed="onActiveSlotChanged">
+                <tab-selection selected="{{activeSlot}}" selected-class="success">
                     <button value="1">Slot #1</button>
                     <button value="2">Slot #2</button>
                     <button value="3">Slot #3</button>
@@ -28,8 +28,18 @@
                 return 'active-slot-characteristic';
             }
 
-            onActiveSlotChanged(e) {
-                console.log(e.detail.value);
+            static get properties() {
+                return {
+                    activeSlot: {
+                        type: String,
+                        value: '1',
+                        observer: 'observeActiveSlot'
+                    }
+                };
+            }
+
+            observeActiveSlot(activeSlot) {
+                console.log(activeSlot);
             }
         }
 
