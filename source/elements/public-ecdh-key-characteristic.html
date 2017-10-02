@@ -1,0 +1,41 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="characteristic-styles.html">
+<link rel="import" href="characteristic-template.html">
+<link rel="import" href="binary-data.html">
+
+<dom-module id="public-ecdh-key-characteristic">
+    <template>
+        <style include="characteristic-styles"></style>
+
+        <characteristic-template number="8" name="Public ECDH Key">
+            <section class="padded">
+                <binary-data data="[[value]]" bytes-per-row="16"></binary-data>
+            </section>
+        </characteristic-template>
+    </template>
+
+    <script>
+        class PublicECDHKeyCharacteristic extends Polymer.Element {
+            static get is() {
+                return 'public-ecdh-key-characteristic';
+            }
+
+            static get properties() {
+                return {
+                    value: {
+                        type: Object,
+                        value: () => {
+                            const buffer = new Uint8Array(32);
+                            for (let i = 0; i < buffer.length; i++) {
+                                buffer[i] = Math.floor(Math.random() * 255);
+                            }
+                            return new DataView(buffer.buffer);
+                        }
+                    }
+                };
+            }
+        }
+
+        customElements.define(PublicECDHKeyCharacteristic.is, PublicECDHKeyCharacteristic);
+    </script>
+</dom-module>
