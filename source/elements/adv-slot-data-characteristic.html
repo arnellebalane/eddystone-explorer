@@ -1,0 +1,69 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-if.html">
+<link rel="import" href="../mixins/comparison-mixin.html">
+<link rel="import" href="characteristic-styles.html">
+<link rel="import" href="characteristic-template.html">
+<link rel="import" href="characteristic-value.html">
+<link rel="import" href="flexible-input.html">
+<link rel="import" href="tab-selection.html">
+
+<dom-module id="adv-slot-data-characteristic">
+    <template>
+        <style include="characteristic-styles"></style>
+        <style>
+            .flex button {
+                margin-left: auto;
+            }
+        </style>
+
+        <characteristic-template number="10" name="ADV Slot Data">
+            <section>
+                <characteristic-value label="Frame type">
+                    <tab-selection selected="0" selected-class="success" on-value-changed="onFrameTypeChanged">
+                        <button value="UID">UID</button>
+                        <button value="URL">URL</button>
+                    </tab-selection>
+                </characteristic-value>
+
+                <template is="dom-if" if="[[isEqual(frameType, 'UID')]]">
+                    <characteristic-value label="Namespace">
+                        <flexible-input length="10"></flexible-input>
+                    </characteristic-value>
+                    <characteristic-value label="Instance">
+                        <flexible-input length="6"></flexible-input>
+                    </characteristic-value>
+                </template>
+
+                <template is="dom-if" if="[[isEqual(frameType, 'URL')]]">
+                    <characteristic-value label="Broadcasted URL">
+                        <flexible-input length="28"></flexible-input>
+                    </characteristic-value>
+                </template>
+            </section>
+
+            <section class="flex padded">
+                <button class="info">Update</button>
+            </section>
+        </characteristic-template>
+    </template>
+
+    <script>
+        class ADVSlotDataCharacteristic extends ComparisonMixin(Polymer.Element) {
+            static get is() {
+                return 'adv-slot-data-characteristic';
+            }
+
+            static get properties() {
+                return {
+                    frameType: String
+                };
+            }
+
+            onFrameTypeChanged(e) {
+                this.frameType = e.detail.value;
+            }
+        }
+
+        customElements.define(ADVSlotDataCharacteristic.is, ADVSlotDataCharacteristic);
+    </script>
+</dom-module>
