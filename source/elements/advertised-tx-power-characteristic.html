@@ -1,0 +1,36 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="characteristic-styles.html">
+<link rel="import" href="characteristic-template.html">
+<link rel="import" href="characteristic-value.html">
+<link rel="import" href="flexible-input.html">
+<link rel="import" href="value-with-unit.html">
+
+<dom-module id="advertised-tx-power-characteristic">
+    <template>
+        <style include="characteristic-styles"></style>
+
+        <characteristic-template number="5" name="Advertised Tx Power">
+            <section>
+                <characteristic-value label="Advertised Tx Power">
+                    <value-with-unit unit="dBm">
+                        <flexible-input value="-60"></flexible-input>
+                    </value-with-unit>
+                </characteristic-value>
+            </section>
+            <section class="padded">
+                <p>Writing a value to this characteristic will set the advertised Tx power for <strong>Slot #1</strong>.</p>
+                <p>When not set, the value of this characteristic defaults to the value of <strong>Radio Tx Power</strong>.</p>
+            </section>
+        </characteristic-template>
+    </template>
+
+    <script>
+        class AdvertisedTxPowerCharacteristic extends Polymer.Element {
+            static get is() {
+                return 'advertised-tx-power-characteristic';
+            }
+        }
+
+        customElements.define(AdvertisedTxPowerCharacteristic.is, AdvertisedTxPowerCharacteristic);
+    </script>
+</dom-module>
