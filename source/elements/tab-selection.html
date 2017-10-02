@@ -20,6 +20,25 @@
             static get is() {
                 return 'tab-selection';
             }
+
+            static get properties() {
+                return {
+                    selected: {
+                        type: Number,
+                        observer: 'observeSelected'
+                    },
+                    selectedClass: String
+                };
+            }
+
+            observeSelected(selected) {
+                const children = Array.from(this.children);
+                children.forEach((child, i) => (
+                    i === selected
+                        ? child.classList.add(this.selectedClass)
+                        : child.classList.remove(this.selectedClass)
+                ));
+            }
         }
 
         customElements.define(TabSelection.is, TabSelection);
