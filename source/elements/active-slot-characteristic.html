@@ -8,14 +8,14 @@
         <style include="characteristic-styles"></style>
 
         <characteristic-template number="2" name="Active Slot">
-            <section padded>
+            <section class="padded">
                 <tab-selection selected="0" selected-class="success" on-value-changed="onActiveSlotChanged">
                     <button value="1">Slot #1</button>
                     <button value="2">Slot #2</button>
                     <button value="3">Slot #3</button>
                 </tab-selection>
             </section>
-            <section padded>
+            <section class="padded">
                 <p>Number of slots is based on <strong>Max supported total slots</strong> capability.</p>
                 <p>Subsequent writes to other characteristics will act on the active slot.</p>
             </section>
