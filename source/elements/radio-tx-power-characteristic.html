@@ -1,0 +1,52 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-if.html">
+<link rel="import" href="characteristic-styles.html">
+<link rel="import" href="characteristic-template.html">
+
+<dom-module id="radio-tx-power-characteristic">
+    <template>
+        <style include="characteristic-styles"></style>
+
+        <characteristic-template number="4" name="Radio Tx Power">
+            <section class="padded">
+                <tab-selection selected="0" selected-class="success" on-value-changed="onRadioTxPowerChanged">
+                    <button value="-100">-100 dBm</button>
+                    <button value="-60">-60 dBm</button>
+                    <button value="0">0 dBm</button>
+                    <button value="20">20 dBm</button>
+                </tab-selection>
+            </section>
+            <section class="padded">
+                <template is="dom-if" if="[[isVariableTxPowerSupported]]">
+                    <p>Writing a value to this characteristic will set the radio Tx power for <strong>Slot #1</strong>.</p>
+                </template>
+                <template is="dom-if" if="[[!isVariableTxPowerSupported]]">
+                    <p class="warning">Because <strong>variable Tx power</strong> is not supported, writing a value to this characteristic will set the radio Tx power for all slots.</p>
+                </template>
+            </section>
+        </characteristic-template>
+    </template>
+
+    <script>
+        class RadioTxPowerCharacteristic extends Polymer.Element {
+            static get is() {
+                return 'radio-tx-power-characteristic';
+            }
+
+            static get properties() {
+                return {
+                    isVariableTxPowerSupported: {
+                        type: Boolean,
+                        value: true
+                    }
+                };
+            }
+
+            onRadioTxPowerChanged(e) {
+                console.log(e.detail.value);
+            }
+        }
+
+        customElements.define(RadioTxPowerCharacteristic.is, RadioTxPowerCharacteristic);
+    </script>
+</dom-module>
