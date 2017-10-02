@@ -14,7 +14,7 @@
             <section>
                 <characteristic-value label="Advertising Interval">
                     <value-with-unit unit="ms">
-                        <flexible-input value="700"></flexible-input>
+                        <flexible-input value="700" on-value-changed="onAdvertisingIntervalChanged"></flexible-input>
                     </value-with-unit>
                 </characteristic-value>
             </section>
@@ -42,6 +42,10 @@
                         value: true
                     }
                 };
+            }
+
+            onAdvertisingIntervalChanged(e) {
+                console.log(e.detail.value);
             }
         }
 

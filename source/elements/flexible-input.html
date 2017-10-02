@@ -17,9 +17,13 @@
                 background: none;
                 outline: none;
             }
+
+            input:focus {
+                border-bottom-color: rgba(255, 255, 255, 0.5);
+            }
         </style>
 
-        <input id="input" type="text" value="{{value::input}}">
+        <input id="input" type="text" value="{{value::input}}" on-change="onChange">
     </template>
 
     <script>
@@ -39,6 +43,13 @@
 
             observeValue(value) {
                 this.$.input.style.width = value.length + 'ch';
+            }
+
+            onChange() {
+                const event = new CustomEvent('value-changed', {
+                    detail: { value: this.value }
+                });
+                this.dispatchEvent(event);
             }
         }
 
