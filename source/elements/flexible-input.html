@@ -43,7 +43,8 @@
                     placeholder: {
                         type: String,
                         observer: 'observePlaceholder'
-                    }
+                    },
+                    length: Number
                 };
             }
 
@@ -56,7 +57,9 @@
             }
 
             calculateInputWidth() {
-                if (this.value) {
+                if (this.length) {
+                    return this.length;
+                } else if (this.value) {
                     return this.value.length;
                 } else if (this.placeholder) {
                     return this.placeholder.length;
