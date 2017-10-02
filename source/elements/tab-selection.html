@@ -27,8 +27,22 @@
                         type: Number,
                         observer: 'observeSelected'
                     },
+                    value: {
+                        type: Object,
+                        computed: 'computeValue(selected)',
+                        notify: true
+                    },
                     selectedClass: String
                 };
+            }
+
+            ready() {
+                super.ready();
+                this.addEventListener('click', (e) => {
+                    const target = e.composedPath()[0];
+                    const children = Array.from(this.children);
+                    this.selected = children.indexOf(target);
+                });
             }
 
             observeSelected(selected) {
@@ -38,6 +52,15 @@
                         ? child.classList.add(this.selectedClass)
                         : child.classList.remove(this.selectedClass)
                 ));
+            }
+
+            computeValue(selected) {
+                const value = this.children[selected].value;
+                try {
+                    return JSON.parse(value);
+                } catch (e) {
+                    return value;
+                }
             }
         }
 
