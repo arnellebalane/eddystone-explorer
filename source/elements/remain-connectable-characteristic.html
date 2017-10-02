@@ -1,0 +1,62 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-if.html">
+<link rel="import" href="characteristic-styles.html">
+<link rel="import" href="characteristic-template.html">
+<link rel="import" href="characteristic-value.html">
+<link rel="import" href="tab-selection.html">
+
+<dom-module id="remain-connectable-characteristic">
+    <template>
+        <style include="characteristic-styles"></style>
+
+        <characteristic-template number="12" name="Remain Connectable">
+            <template is="dom-if" if="[[canRemainConnectable]]">
+                <section>
+                    <characteristic-value label="Remain Connectable">
+                        <tab-selection selected="{{remainConnectable}}" selected-class="success">
+                            <button value="true">Yes</button>
+                            <button value="false">No</button>
+                        </tab-selection>
+                    </characteristic-value>
+                </section>
+                <section class="padded messages">
+                    <p class="warning">The beacon will become non-connectable once you disconnect from it.</p>
+                </section>
+            </template>
+
+            <template is="dom-if" if="[[!canRemainConnectable]]">
+                <section class="padded messages">
+                    <p class="warning">The beacon is only capable of running in an always connectable state.</p>
+                </section>
+            </template>
+        </characteristic-template>
+    </template>
+
+    <script>
+        class RemainConnectableCharacteristic extends Polymer.Element {
+            static get is() {
+                return 'remain-connectable-characteristic';
+            }
+
+            static get properties() {
+                return {
+                    remainConnectable: {
+                        type: String,
+                        value: 'true',
+                        observer: 'observeRemainConnectable'
+                    },
+                    canRemainConnectable: {
+                        type: Boolean,
+                        value: true
+                    }
+                };
+            }
+
+            observeRemainConnectable(remainConnectable) {
+                console.log(remainConnectable);
+            }
+        }
+
+        customElements.define(RemainConnectableCharacteristic.is, RemainConnectableCharacteristic);
+    </script>
+</dom-module>
