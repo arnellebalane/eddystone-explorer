@@ -4,6 +4,7 @@
     <template>
         <style>
             input {
+                width: 3ch;
                 min-width: 3ch;
                 padding: 0;
                 border: none;
@@ -23,7 +24,7 @@
             }
         </style>
 
-        <input id="input" type="text" value="{{value::input}}" on-change="onChange">
+        <input id="input" type="text" value="{{value::input}}" placeholder="{{placeholder}}" on-change="onChange">
     </template>
 
     <script>
@@ -37,12 +38,29 @@
                     value: {
                         type: String,
                         observer: 'observeValue'
+                    },
+                    placeholder: {
+                        type: String,
+                        observer: 'observePlaceholder'
                     }
                 };
             }
 
             observeValue(value) {
-                this.$.input.style.width = value.length + 'ch';
+                this.$.input.style.width = this.calculateInputWidth() + 'ch';
+            }
+
+            observePlaceholder(placeholder) {
+                this.$.input.style.width = this.calculateInputWidth() + 'ch';
+            }
+
+            calculateInputWidth() {
+                if (this.value) {
+                    return this.value.length;
+                } else if (this.placeholder) {
+                    return this.placeholder.length;
+                }
+                return 0;
             }
 
             onChange() {
