@@ -16,10 +16,11 @@
 
         <characteristic-template number="7" name="Unlock">
             <template is="dom-if" if="[[unlocked]]">
-                <section class="padded">
+                <section class="padded messages">
                     <p class="warning">The beacon is already unlocked. This characteristic is only available when the beacon is locked.</p>
                 </section>
             </template>
+
             <template is="dom-if" if="[[!unlocked]]">
                 <section>
                     <characteristic-value label="Current lock code">
