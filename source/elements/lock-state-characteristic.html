@@ -17,7 +17,7 @@
 
         <characteristic-template number="6" name="Lock State">
             <section class="padded">
-                <tab-selection selected="1" selected-class="success" on-value-changed="onLockStateChanged">
+                <tab-selection selected="{{lockState}}" selected-class="success">
                     <button value="locked">Locked</button>
                     <button value="unlocked">Unlocked</button>
                     <button value="unlocked-ard">Unlocked and Automatic Relock Disabled</button>
@@ -47,6 +47,11 @@
 
             static get properties() {
                 return {
+                    lockState: {
+                        type: String,
+                        value: 'unlocked',
+                        observer: 'observeLockState'
+                    },
                     locking: {
                         type: Boolean,
                         value: false
@@ -54,11 +59,8 @@
                 };
             }
 
-            onLockStateChanged(e) {
-                const lockState = e.detail.value;
-                if (lockState === 'locked') {
-                    this.locking = true;
-                }
+            observeLockState(lockState) {
+                this.locking = lockState === 'locked';
             }
         }
 
