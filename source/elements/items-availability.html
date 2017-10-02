@@ -21,12 +21,12 @@
                 margin-right: 0.4rem;
             }
 
-            ::slotted([available]) {
+            ::slotted(.available) {
                 font-weight: 600;
                 color: var(--success-color);
             }
 
-            ::slotted(:not([available])) {
+            ::slotted(:not(.available)) {
                 color: var(--danger-color);
                 opacity: 0.5;
             }
