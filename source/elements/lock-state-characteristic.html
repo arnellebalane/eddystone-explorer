@@ -1,11 +1,18 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="characteristic-styles.html">
 <link rel="import" href="characteristic-template.html">
+<link rel="import" href="characteristic-value.html">
+<link rel="import" href="flexible-input.html">
 <link rel="import" href="tab-selection.html">
 
 <dom-module id="lock-state-characteristic">
     <template>
         <style include="characteristic-styles"></style>
+        <style>
+            .flex button {
+                margin-left: auto;
+            }
+        </style>
 
         <characteristic-template number="6" name="Lock State">
             <section class="padded">
@@ -14,6 +21,17 @@
                     <button value="unlocked">Unlocked</button>
                     <button value="unlocked-ard">Unlocked and Automatic Relock Disabled</button>
                 </tab-selection>
+            </section>
+            <section>
+                <characteristic-value label="New lock code">
+                    <flexible-input placeholder="(optional)"></flexible-input>
+                </characteristic-value>
+                <characteristic-value label="Current lock code">
+                    <flexible-input placeholder="(optional)"></flexible-input>
+                </characteristic-value>
+            </section>
+            <section class="flex padded">
+                <button class="info">Continue</button>
             </section>
         </characteristic-template>
     </template>
