@@ -1,0 +1,46 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-if.html">
+<link rel="import" href="characteristic-styles.html">
+<link rel="import" href="characteristic-template.html">
+
+<dom-module id="factory-reset-characteristic">
+    <template>
+        <style include="characteristic-styles"></style>
+
+        <characteristic-template number="11" name="Factory Reset">
+            <template is="dom-if" if="[[locked]]">
+                <section class="padded messages">
+                    <p class="warning">The beacon is currently locked. This characteristic is only available when the beacon is unlocked.</p>
+                </section>
+            </template>
+
+            <template is="dom-if" if="[[!locked]]">
+                <section class="padded">
+                    <button class="info">Reset Beacon</button>
+                </section>
+                <section class="padded messages">
+                    <p class="warning">When the beacon is reset, its lock code will remain set to its current value.</p>
+                </section>
+            </template>
+        </characteristic-template>
+    </template>
+
+    <script>
+        class FactoryResetCharacteristic extends Polymer.Element {
+            static get is() {
+                return 'factory-reset-characteristic';
+            }
+
+            static get properties() {
+                return {
+                    locked: {
+                        type: Boolean,
+                        value: false
+                    }
+                };
+            }
+        }
+
+        customElements.define(FactoryResetCharacteristic.is, FactoryResetCharacteristic);
+    </script>
+</dom-module>
