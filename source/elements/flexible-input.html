@@ -38,21 +38,22 @@
                 return {
                     value: {
                         type: String,
-                        observer: 'observeValue'
+                        observer: 'updateInputWidth'
                     },
                     placeholder: {
                         type: String,
-                        observer: 'observePlaceholder'
+                        observer: 'updateInputWidth'
                     },
                     length: Number
                 };
             }
 
-            observeValue(value) {
-                this.$.input.style.width = this.calculateInputWidth() + 'ch';
+            ready() {
+                super.ready();
+                this.updateInputWidth();
             }
 
-            observePlaceholder(placeholder) {
+            updateInputWidth() {
                 this.$.input.style.width = this.calculateInputWidth() + 'ch';
             }
 

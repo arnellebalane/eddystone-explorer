@@ -1,0 +1,54 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-if.html">
+<link rel="import" href="characteristic-styles.html">
+<link rel="import" href="characteristic-template.html">
+<link rel="import" href="characteristic-value.html">
+<link rel="import" href="flexible-input.html">
+
+<dom-module id="unlock-characteristic">
+    <template>
+        <style include="characteristic-styles"></style>
+        <style>
+            .flex button {
+                margin-left: auto;
+            }
+        </style>
+
+        <characteristic-template number="7" name="Unlock">
+            <template is="dom-if" if="[[unlocked]]">
+                <section class="padded">
+                    <p class="warning">The beacon is already unlocked. This characteristic is only available when the beacon is locked.</p>
+                </section>
+            </template>
+            <template is="dom-if" if="[[!unlocked]]">
+                <section>
+                    <characteristic-value label="Current lock code">
+                        <flexible-input length="16"></flexible-input>
+                    </characteristic-value>
+                </section>
+                <section class="flex padded">
+                    <button class="info">Unlock Beacon</button>
+                </section>
+            </template>
+        </characteristic-template>
+    </template>
+
+    <script>
+        class UnlockCharacteristic extends Polymer.Element {
+            static get is() {
+                return 'unlock-characteristic';
+            }
+
+            static get properties() {
+                return {
+                    unlocked: {
+                        type: Boolean,
+                        value: false
+                    }
+                };
+            }
+        }
+
+        customElements.define(UnlockCharacteristic.is, UnlockCharacteristic);
+    </script>
+</dom-module>
