@@ -1,4 +1,5 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-if.html">
 <link rel="import" href="characteristic-styles.html">
 <link rel="import" href="characteristic-template.html">
 <link rel="import" href="characteristic-value.html">
@@ -16,23 +17,25 @@
 
         <characteristic-template number="6" name="Lock State">
             <section class="padded">
-                <tab-selection selected="1" selected-class="success">
+                <tab-selection selected="1" selected-class="success" on-value-changed="onLockStateChanged">
                     <button value="locked">Locked</button>
                     <button value="unlocked">Unlocked</button>
                     <button value="unlocked-ard">Unlocked and Automatic Relock Disabled</button>
                 </tab-selection>
             </section>
-            <section>
-                <characteristic-value label="New lock code">
-                    <flexible-input placeholder="(optional)" length="16"></flexible-input>
-                </characteristic-value>
-                <characteristic-value label="Current lock code">
-                    <flexible-input placeholder="(optional)" length="16"></flexible-input>
-                </characteristic-value>
-            </section>
-            <section class="flex padded">
-                <button class="info">Continue</button>
-            </section>
+            <template is="dom-if" if="[[locking]]">
+                <section>
+                    <characteristic-value label="New lock code">
+                        <flexible-input placeholder="(optional)" length="16"></flexible-input>
+                    </characteristic-value>
+                    <characteristic-value label="Current lock code">
+                        <flexible-input placeholder="(optional)" length="16"></flexible-input>
+                    </characteristic-value>
+                </section>
+                <section class="flex padded">
+                    <button class="info">Continue</button>
+                </section>
+            </template>
         </characteristic-template>
     </template>
 
@@ -40,6 +43,22 @@
         class LockStateCharacteristic extends Polymer.Element {
             static get is() {
                 return 'lock-state-characteristic';
+            }
+
+            static get properties() {
+                return {
+                    locking: {
+                        type: Boolean,
+                        value: false
+                    }
+                };
+            }
+
+            onLockStateChanged(e) {
+                const lockState = e.detail.value;
+                if (lockState === 'locked') {
+                    this.locking = true;
+                }
             }
         }
 
