@@ -6,6 +6,42 @@
             :host {
                 display: block;
             }
+
+            button {
+                padding: 0 0.8rem;
+                border: none;
+                font-family: var(--monospace-font);
+                font-size: 1.2rem;
+                line-height: 2rem;
+                text-transform: uppercase;
+                color: #fff;
+                background-color: rgba(255, 255, 255, 0.1);
+            }
+
+            .success-btn {
+                background-color: var(--success-color);
+            }
+
+            .info-btn {
+                background-color: var(--info-color);
+            }
+
+            .danger-btn {
+                background-color: var(--danger-color);
+            }
+
+            .success-btn.loading {
+                /**
+                 * NOTE: In the future, use a combination of custom properties
+                 * and the color() function to derive colors from already-defined
+                 * colors.
+                 **/
+                background-color: rgba(76, 175, 80, 0.3);
+            }
+
+            button[disabled] {
+                opacity: 0.5;
+            }
         </style>
     </template>
 </dom-module>
