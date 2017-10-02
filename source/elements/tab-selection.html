@@ -1,0 +1,27 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="tab-selection">
+    <template>
+        <style>
+            :host {
+                display: flex;
+            }
+
+            ::slotted(button:not(:last-child)) {
+                margin-right: 1px;
+            }
+        </style>
+
+        <slot></slot>
+    </template>
+
+    <script>
+        class TabSelection extends Polymer.Element {
+            static get is() {
+                return 'tab-selection';
+            }
+        }
+
+        customElements.define(TabSelection.is, TabSelection);
+    </script>
+</dom-module>
