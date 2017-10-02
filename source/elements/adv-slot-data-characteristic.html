@@ -19,7 +19,7 @@
         <characteristic-template number="10" name="ADV Slot Data">
             <section>
                 <characteristic-value label="Frame type">
-                    <tab-selection selected="0" selected-class="success" on-value-changed="onFrameTypeChanged">
+                    <tab-selection selected="{{frameType}}" selected-class="success">
                         <button value="UID">UID</button>
                         <button value="URL">URL</button>
                     </tab-selection>
@@ -55,12 +55,16 @@
 
             static get properties() {
                 return {
-                    frameType: String
+                    frameType: {
+                        type: String,
+                        value: 'UID',
+                        observer: 'observeFrameType'
+                    }
                 };
             }
 
-            onFrameTypeChanged(e) {
-                this.frameType = e.detail.value;
+            observeFrameType(frameType) {
+                console.log(frameType);
             }
         }
 
