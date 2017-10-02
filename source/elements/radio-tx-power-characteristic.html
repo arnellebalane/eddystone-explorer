@@ -14,7 +14,7 @@
 
         <characteristic-template number="4" name="Radio Tx Power">
             <section class="padded">
-                <tab-selection selected="0" selected-class="success" on-value-changed="onRadioTxPowerChanged">
+                <tab-selection selected="{{radioTxPower}}" selected-class="success">
                     <button value="-100">-100 dBm</button>
                     <button value="-60">-60 dBm</button>
                     <button value="0">0 dBm</button>
@@ -40,6 +40,11 @@
 
             static get properties() {
                 return {
+                    radioTxPower: {
+                        type: String,
+                        value: '-100',
+                        observer: 'observeRadioTxPower'
+                    },
                     isVariableTxPowerSupported: {
                         type: Boolean,
                         value: true
@@ -47,8 +52,8 @@
                 };
             }
 
-            onRadioTxPowerChanged(e) {
-                console.log(e.detail.value);
+            observeRadioTxPower(radioTxPower) {
+                console.log(radioTxPower);
             }
         }
 
