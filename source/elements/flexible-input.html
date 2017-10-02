@@ -1,0 +1,47 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="flexible-input">
+    <template>
+        <style>
+            input {
+                min-width: 3ch;
+                padding: 0;
+                border: none;
+                border-bottom: 2px solid rgba(255, 255, 255, 0.25);
+                font-family: var(--monospace-font);
+                font-size: 1.4rem;
+                font-weight: 600;
+                line-height: 3.2rem;
+                text-align: right;
+                color: #fff;
+                background: none;
+                outline: none;
+            }
+        </style>
+
+        <input id="input" type="text" value="{{value::input}}">
+    </template>
+
+    <script>
+        class FlexibleInput extends Polymer.Element {
+            static get is() {
+                return 'flexible-input';
+            }
+
+            static get properties() {
+                return {
+                    value: {
+                        type: String,
+                        observer: 'observeValue'
+                    }
+                };
+            }
+
+            observeValue(value) {
+                this.$.input.style.width = value.length + 'ch';
+            }
+        }
+
+        customElements.define(FlexibleInput.is, FlexibleInput);
+    </script>
+</dom-module>
