@@ -1,0 +1,56 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-repeat.html">
+
+<dom-module id="binary-data">
+    <template>
+        <style>
+            p {
+                margin: 0;
+                font-family: var(--monospace-font);
+                font-size: 1.4rem;
+                font-weight: 600;
+                text-transform: uppercase;
+                opacity: 0.5;
+            }
+        </style>
+
+        <template is="dom-repeat" items="[[bytes]]">
+            <p>[[item]]</p>
+        </template>
+    </template>
+
+    <script>
+        class BinaryData extends Polymer.Element {
+            static get is() {
+                return 'binary-data';
+            }
+
+            static get properties() {
+                return {
+                    data: Object,
+                    bytesPerRow: Number,
+                    bytes: {
+                        type: Array,
+                        computed: 'computeBytes(data)'
+                    }
+                }
+            }
+
+            computeBytes(data) {
+                const bytes = [];
+                const bytesPerRow = this.bytesPerRow;
+                for (let i = 0; i < data.byteLength; i++) {
+                    const row = Math.floor(i / bytesPerRow);
+                    if (i % bytesPerRow === 0) {
+                        bytes[row] = [];
+                    }
+                    let byte = data.getUint8(i).toString(16);
+                    bytes[row][i % bytesPerRow] = byte.length < 2 ? '0' + byte : byte;
+                }
+                return bytes.map((row) => row.join(' '));
+            }
+        }
+
+        customElements.define(BinaryData.is, BinaryData);
+    </script>
+</dom-module>
