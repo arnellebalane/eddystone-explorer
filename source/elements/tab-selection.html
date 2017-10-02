@@ -24,12 +24,8 @@
             static get properties() {
                 return {
                     selected: {
-                        type: Number,
-                        observer: 'observeSelected'
-                    },
-                    value: {
-                        type: Object,
-                        computed: 'computeValue(selected)',
+                        type: String,
+                        observer: 'observeSelected',
                         notify: true
                     },
                     selectedClass: String
@@ -40,27 +36,17 @@
                 super.ready();
                 this.addEventListener('click', (e) => {
                     const target = e.composedPath()[0];
-                    const children = Array.from(this.children);
-                    this.selected = children.indexOf(target);
+                    this.selected = target.value;
                 });
             }
 
             observeSelected(selected) {
                 const children = Array.from(this.children);
-                children.forEach((child, i) => (
-                    i === selected
+                children.forEach((child) => (
+                    child.value === selected
                         ? child.classList.add(this.selectedClass)
                         : child.classList.remove(this.selectedClass)
                 ));
-            }
-
-            computeValue(selected) {
-                const value = this.children[selected].value;
-                try {
-                    return JSON.parse(value);
-                } catch (e) {
-                    return value;
-                }
             }
         }
 
