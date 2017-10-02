@@ -1,0 +1,30 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="characteristic-styles.html">
+<link rel="import" href="characteristic-template.html">
+<link rel="import" href="tab-selection.html">
+
+<dom-module id="lock-state-characteristic">
+    <template>
+        <style include="characteristic-styles"></style>
+
+        <characteristic-template number="6" name="Lock State">
+            <section class="padded">
+                <tab-selection selected="1" selected-class="success">
+                    <button value="locked">Locked</button>
+                    <button value="unlocked">Unlocked</button>
+                    <button value="unlocked-ard">Unlocked and Automatic Relock Disabled</button>
+                </tab-selection>
+            </section>
+        </characteristic-template>
+    </template>
+
+    <script>
+        class LockStateCharacteristic extends Polymer.Element {
+            static get is() {
+                return 'lock-state-characteristic';
+            }
+        }
+
+        customElements.define(LockStateCharacteristic.is, LockStateCharacteristic);
+    </script>
+</dom-module>
