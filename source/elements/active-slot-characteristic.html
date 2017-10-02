@@ -1,0 +1,25 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="characteristic-styles.html">
+<link rel="import" href="characteristic-template.html">
+
+<dom-module id="active-slot-characteristic">
+    <template>
+        <style include="characteristic-styles"></style>
+
+        <characteristic-template number="2" name="Active Slot">
+            <section padded>
+                <p>test</p>
+            </section>
+        </characteristic-template>
+    </template>
+
+    <script>
+        class ActiveSlotCharacteristic extends Polymer.Element {
+            static get is() {
+                return 'active-slot-characteristic';
+            }
+        }
+
+        customElements.define(ActiveSlotCharacteristic.is, ActiveSlotCharacteristic);
+    </script>
+</dom-module>

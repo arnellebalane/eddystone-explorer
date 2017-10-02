@@ -1,6 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="beacon-connection.html">
 <link rel="import" href="capabilities-characteristic.html">
+<link rel="import" href="active-slot-characteristic.html">
 
 <dom-module id="eddystone-explorer">
     <template>
@@ -25,6 +26,14 @@
                 font-size: 1.8rem;
                 font-weight: 400;
             }
+
+            main > *:not(:first-child) {
+                margin-top: 2.4rem;
+            }
+
+            main > *:not(:last-child) {
+                margin-bottom: 2.4rem;
+            }
         </style>
 
         <div class="wrapper">
@@ -34,6 +43,7 @@
             </header>
             <main>
                 <capabilities-characteristic></capabilities-characteristic>
+                <active-slot-characteristic></active-slot-characteristic>
             </main>
         </div>
     </template>
