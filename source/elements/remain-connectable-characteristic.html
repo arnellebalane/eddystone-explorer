@@ -9,11 +9,11 @@
     <template>
         <style include="characteristic-styles"></style>
 
-        <characteristic-template number="12" name="Remain Connectable">
+        <characteristic-template number="12" name="Remain Connectable" loading="{{loading}}">
             <template is="dom-if" if="[[canRemainConnectable]]">
                 <section>
                     <characteristic-value label="Remain Connectable">
-                        <tab-selection selected="{{remainConnectable}}" selected-class="success">
+                        <tab-selection selected="{{remainConnectable}}" selected-class="success" loading="{{loading}}">
                             <button value="true">Yes</button>
                             <button value="false">No</button>
                         </tab-selection>

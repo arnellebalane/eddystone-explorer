@@ -15,9 +15,9 @@
             }
         </style>
 
-        <characteristic-template number="6" name="Lock State">
+        <characteristic-template number="6" name="Lock State" loading="{{loading}}">
             <section class="padded">
-                <tab-selection selected="{{lockState}}" selected-class="success">
+                <tab-selection selected="{{lockState}}" selected-class="success" loading="{{loading}}">
                     <button value="locked">Locked</button>
                     <button value="unlocked">Unlocked</button>
                     <button value="unlocked-ard">Unlocked and Automatic Relock Disabled</button>

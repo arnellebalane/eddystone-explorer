@@ -56,7 +56,12 @@
             static get properties() {
                 return {
                     number: Number,
-                    name: String
+                    name: String,
+                    loading: {
+                        type: Boolean,
+                        value: false,
+                        notify: true
+                    }
                 };
             }
         }

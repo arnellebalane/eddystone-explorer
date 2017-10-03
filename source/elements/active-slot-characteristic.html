@@ -7,9 +7,9 @@
     <template>
         <style include="characteristic-styles"></style>
 
-        <characteristic-template number="2" name="Active Slot">
+        <characteristic-template number="2" name="Active Slot" loading="{{loading}}">
             <section class="padded">
-                <tab-selection selected="{{activeSlot}}" selected-class="success">
+                <tab-selection selected="{{activeSlot}}" selected-class="success" loading="{{loading}}">
                     <button value="1">Slot #1</button>
                     <button value="2">Slot #2</button>
                     <button value="3">Slot #3</button>

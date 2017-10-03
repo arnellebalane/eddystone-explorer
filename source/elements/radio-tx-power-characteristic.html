@@ -12,9 +12,9 @@
             }
         </style>
 
-        <characteristic-template number="4" name="Radio Tx Power">
+        <characteristic-template number="4" name="Radio Tx Power" loading="{{loading}}">
             <section class="padded">
-                <tab-selection selected="{{radioTxPower}}" selected-class="success">
+                <tab-selection selected="{{radioTxPower}}" selected-class="success" loading="{{loading}}">
                     <button value="-100">-100 dBm</button>
                     <button value="-60">-60 dBm</button>
                     <button value="0">0 dBm</button>
