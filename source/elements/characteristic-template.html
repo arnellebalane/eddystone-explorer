@@ -1,4 +1,5 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="simple-spinner.html">
 
 <dom-module id="characteristic-template">
     <template>
@@ -13,17 +14,19 @@
             }
 
             header {
+                display: flex;
+                align-items: center;
                 padding: 1.6rem 4.2rem;
                 position: relative;
             }
 
-            header h2 {
+            h2 {
                 margin: 0;
                 font-size: 1.6rem;
                 font-weight: 400;
             }
 
-            header span {
+            span {
                 position: absolute;
                 top: 1.8rem;
                 right: calc(100% - 4.2rem + 0.8rem);
@@ -32,8 +35,12 @@
                 opacity: 0.5;
             }
 
-            header span::before {
+            span::before {
                 content: "#";
+            }
+
+            simple-spinner {
+                margin-left: auto;
             }
         </style>
 
@@ -41,6 +48,7 @@
             <header>
                 <span>[[number]]</span>
                 <h2>[[name]]</h2>
+                <simple-spinner shown="[[loading]]"></simple-spinner>
             </header>
 
             <slot></slot>
