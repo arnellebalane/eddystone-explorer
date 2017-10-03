@@ -78,11 +78,7 @@
                         value: 'default',
                         notify: true
                     },
-                    beacon: Object,
-                    service: {
-                        type: Object,
-                        notify: true
-                    }
+                    beacon: Object
                 };
             }
 
@@ -100,8 +96,10 @@
                     this.status = 'connecting';
                     await this.beacon.gatt.connect();
 
-                    this.service = await this.beacon.gatt.getPrimaryService(EDDYSTONE_SERVICE_UUID);
                     this.status = 'connected';
+                    this.dispatchEvent(new CustomEvent('beacon-changed', {
+                        detail: { value: this.beacon }
+                    }));
                 } catch (error) {
                     console.error(error);
                     this.status = 'default';
@@ -112,7 +110,6 @@
                 await this.beacon.gatt.disconnect();
                 this.status = 'default';
                 this.beacon = null;
-                this.service = null;
             }
         }
 

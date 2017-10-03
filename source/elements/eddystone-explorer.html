@@ -53,7 +53,7 @@
         <div class="wrapper">
             <header>
                 <h2>Explore and configure your beacons that support Eddystone, an open beacon format from Google.</h2>
-                <beacon-connection service="{{service}}"></beacon-connection>
+                <beacon-connection beacon="{{beacon}}"></beacon-connection>
             </header>
             <main>
                 <capabilities-characteristic></capabilities-characteristic>
@@ -80,15 +80,15 @@
 
             static get properties() {
                 return {
-                    service: {
+                    beacon: {
                         type: Object,
-                        observer: 'observeService'
+                        observer: 'observeBeacon'
                     }
                 };
             }
 
-            observeService(service) {
-                console.log(service);
+            observeBeacon(beacon) {
+                console.log(beacon);
             }
         }
 
