@@ -7,6 +7,10 @@
                 display: flex;
             }
 
+            :host(.loading) {
+                pointer-events: none;
+            }
+
             ::slotted(button:not(:last-child)) {
                 margin-right: 1px;
             }
@@ -28,7 +32,12 @@
                         observer: 'observeSelected',
                         notify: true
                     },
-                    selectedClass: String
+                    selectedClass: String,
+                    loading: {
+                        type: Boolean,
+                        value: false,
+                        observer: 'observeLoading'
+                    }
                 };
             }
 
@@ -47,6 +56,14 @@
                         ? child.classList.add(this.selectedClass)
                         : child.classList.remove(this.selectedClass)
                 ));
+            }
+
+            observeLoading(loading) {
+                if (loading) {
+                    this.classList.add('loading');
+                } else {
+                    this.classList.remove('loading');
+                }
             }
         }
 
