@@ -1,4 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-repeat.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-if.html">
 <link rel="import" href="characteristic-styles.html">
 <link rel="import" href="characteristic-template.html">
 <link rel="import" href="characteristic-value.html">
@@ -9,24 +11,28 @@
     <template>
         <style include="characteristic-styles"></style>
 
-        <characteristic-template number="1" name="Capabilities">
+        <characteristic-template number="1" name="Capabilities" loading="[[loading]]" data-loaded="[[dataLoaded]]">
             <section>
-                <characteristic-value label="Spec version" value="0"></characteristic-value>
-                <characteristic-value label="Max supported total slots" value="3"></characteristic-value>
-                <characteristic-value label="Max supported EID slots" value="0"></characteristic-value>
-                <characteristic-value label="Variable ADV interval supported?" value="true"></characteristic-value>
-                <characteristic-value label="Variable Tx power supported?" value="false"></characteristic-value>
+                <characteristic-value label="Spec version" value="[[specVersion]]"></characteristic-value>
+                <characteristic-value label="Max supported total slots" value="[[maxSupportedTotalSlots]]"></characteristic-value>
+                <characteristic-value label="Max supported EID slots" value="[[maxSupportedEidSlots]]"></characteristic-value>
+                <characteristic-value label="Variable ADV interval supported?" value="[[variableAdvIntervalSupported]]"></characteristic-value>
+                <characteristic-value label="Variable Tx power supported?" value="[[variableTxPowerSupported]]"></characteristic-value>
                 <characteristic-value label="Supported frame types">
                     <items-availability>
-                        <p class="available">UID</p>
-                        <p class="available">URL</p>
-                        <p>TLM</p>
-                        <p>EID</p>
+                        <template is="dom-repeat" items="[[supportedFrameTypes]]">
+                            <template is="dom-if" if="[[item.available]]">
+                                <p class="available">[[item.name]]</p>
+                            </template>
+                            <template is="dom-if" if="[[!item.available]]">
+                                <p>[[item.name]]</p>
+                            </template>
+                        </template>
                     </items-availability>
                 </characteristic-value>
                 <characteristic-value label="Supported radio Tx power">
                     <value-with-unit unit="dBm">
-                        <p>-100, -60, 0, 20</p>
+                        <p>[[supportedRadioTxPowers]]</p>
                     </value-with-unit>
                 </characteristic-value>
             </section>
@@ -44,12 +50,109 @@
                     service: {
                         type: Object,
                         observer: 'observeService'
+                    },
+                    characteristicUuid: {
+                        type: String,
+                        value: 'a3c87501-8ed3-4bdf-8a39-a01bebede295'
+                    },
+                    characteristic: Object,
+                    loading: {
+                        type: Boolean,
+                        value: true
+                    },
+                    dataLoaded: {
+                        type: Boolean,
+                        value: false
+                    },
+                    binaryData: {
+                        type: Object,
+                        observer: 'observeBinaryData'
+                    },
+                    specVersion: {
+                        type: Number,
+                        computed: 'computeSpecVersion(binaryData)'
+                    },
+                    maxSupportedTotalSlots: {
+                        type: Number,
+                        computed: 'computeMaxSupportedTotalSlots(binaryData)'
+                    },
+                    maxSupportedEidSlots: {
+                        type: Number,
+                        computed: 'computeMaxSupportedEidSlots(binaryData)'
+                    },
+                    variableAdvIntervalSupported: {
+                        type: Boolean,
+                        computed: 'computeVariableAdvIntervalSupported(binaryData)'
+                    },
+                    variableTxPowerSupported: {
+                        type: Boolean,
+                        computed: 'computeVariableTxPowerSupported(binaryData)'
+                    },
+                    supportedFrameTypes: {
+                        type: Array,
+                        computed: 'computeSupportedFrameTypes(binaryData)'
+                    },
+                    supportedRadioTxPowers: {
+                        type: String,
+                        computed: 'computeSupportedRadioTxPowers(binaryData)'
                     }
                 };
             }
 
-            observeService(service) {
-                console.info(service);
+            async observeService(service) {
+                if (service) {
+                    this.characteristic = await service.getCharacteristic(this.characteristicUuid);
+                    this.binaryData = await this.characteristic.readValue();
+                } else {
+                    this.binaryData = undefined;
+                }
+            }
+
+            computeSpecVersion(binaryData) {
+                return binaryData.getUint8(0);
+            }
+
+            computeMaxSupportedTotalSlots(binaryData) {
+                return binaryData.getUint8(1);
+            }
+
+            computeMaxSupportedEidSlots(binaryData) {
+                return binaryData.getUint8(2);
+            }
+
+            computeVariableAdvIntervalSupported(binaryData) {
+                return Boolean(binaryData.getUint8(3) & 0x01);
+            }
+
+            computeVariableTxPowerSupported(binaryData) {
+                return Boolean(binaryData.getUint8(3) & 0x02);
+            }
+
+            observeBinaryData(binaryData) {
+                this.loading = false;
+                this.dataLoaded = true;
+            }
+
+            computeSupportedFrameTypes(binaryData) {
+                const frameTypes = [
+                    { name: 'UID', code: 0x0001 },
+                    { name: 'URL', code: 0x0002 },
+                    { name: 'TLM', code: 0x0004 },
+                    { name: 'EID', code: 0x0008 }
+                ];
+                const frameTypeBits = binaryData.getUint16(2);
+                return frameTypes.map((frameType) => {
+                    frameType.available = Boolean(frameTypeBits & frameType.code);
+                    return frameType;
+                });
+            }
+
+            computeSupportedRadioTxPowers(binaryData) {
+                const radioTxPowers = [];
+                for (let i = 6; i < binaryData.byteLength; i++) {
+                    radioTxPowers.push(binaryData.getInt8(i));
+                }
+                return radioTxPowers.join(', ');
             }
         }
 
