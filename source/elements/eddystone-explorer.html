@@ -48,26 +48,30 @@
             main > *:not(:last-child) {
                 margin-bottom: 2.4rem;
             }
+
+            .hidden {
+                display: none;
+            }
         </style>
 
         <div class="wrapper">
             <header>
                 <h2>Explore and configure your beacons that support Eddystone, an open beacon format from Google.</h2>
-                <beacon-connection beacon="{{beacon}}"></beacon-connection>
+                <beacon-connection beacon="{{beacon}}" service-uuid="[[serviceUuid]]"></beacon-connection>
             </header>
-            <main>
-                <capabilities-characteristic></capabilities-characteristic>
-                <active-slot-characteristic></active-slot-characteristic>
-                <advertising-interval-characteristic></advertising-interval-characteristic>
-                <radio-tx-power-characteristic></radio-tx-power-characteristic>
-                <advertised-tx-power-characteristic></advertised-tx-power-characteristic>
-                <lock-state-characteristic></lock-state-characteristic>
-                <unlock-characteristic></unlock-characteristic>
-                <public-ecdh-key-characteristic></public-ecdh-key-characteristic>
-                <eid-identity-key-characteristic></eid-identity-key-characteristic>
-                <adv-slot-data-characteristic></adv-slot-data-characteristic>
-                <factory-reset-characteristic></factory-reset-characteristic>
-                <remain-connectable-characteristic></remain-connectable-characteristic>
+            <main id="characteristics" class="hidden">
+                <capabilities-characteristic service="[[service]]"></capabilities-characteristic>
+                <active-slot-characteristic service="[[service]]"></active-slot-characteristic>
+                <advertising-interval-characteristic service="[[service]]"></advertising-interval-characteristic>
+                <radio-tx-power-characteristic service="[[service]]"></radio-tx-power-characteristic>
+                <advertised-tx-power-characteristic service="[[service]]"></advertised-tx-power-characteristic>
+                <lock-state-characteristic service="[[service]]"></lock-state-characteristic>
+                <unlock-characteristic service="[[service]]"></unlock-characteristic>
+                <public-ecdh-key-characteristic service="[[service]]"></public-ecdh-key-characteristic>
+                <eid-identity-key-characteristic service="[[service]]"></eid-identity-key-characteristic>
+                <adv-slot-data-characteristic service="[[service]]"></adv-slot-data-characteristic>
+                <factory-reset-characteristic service="[[service]]"></factory-reset-characteristic>
+                <remain-connectable-characteristic service="[[service]]"></remain-connectable-characteristic>
             </main>
         </div>
     </template>
@@ -83,12 +87,23 @@
                     beacon: {
                         type: Object,
                         observer: 'observeBeacon'
-                    }
+                    },
+                    serviceUuid: {
+                        type: String,
+                        value: 'a3c87500-8ed3-4bdf-8a39-a01bebede295'
+                    },
+                    service: Object
                 };
             }
 
-            observeBeacon(beacon) {
-                console.log(beacon);
+            async observeBeacon(beacon) {
+                if (beacon) {
+                    this.$.characteristics.classList.remove('hidden');
+                    this.service = await beacon.gatt.getPrimaryService(this.serviceUuid);
+                } else {
+                    this.$.characteristics.classList.add('hidden');
+                    this.service = undefined;
+                }
             }
         }
 

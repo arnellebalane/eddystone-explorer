@@ -38,6 +38,19 @@
             static get is() {
                 return 'capabilities-characteristic';
             }
+
+            static get properties() {
+                return {
+                    service: {
+                        type: Object,
+                        observer: 'observeService'
+                    }
+                };
+            }
+
+            observeService(service) {
+                console.info(service);
+            }
         }
 
         customElements.define(CapabilitiesCharacteristic.is, CapabilitiesCharacteristic);

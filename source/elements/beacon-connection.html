@@ -78,18 +78,17 @@
                         value: 'default',
                         notify: true
                     },
+                    serviceUuid: String,
                     beacon: Object
                 };
             }
 
             async onRequestDevice() {
-                const EDDYSTONE_SERVICE_UUID = 'a3c87500-8ed3-4bdf-8a39-a01bebede295';
-
                 this.status = 'scanning';
                 try {
                     this.beacon = await navigator.bluetooth.requestDevice({
                         filters: [
-                            { services: [ EDDYSTONE_SERVICE_UUID ] }
+                            { services: [ this.serviceUuid ] }
                         ]
                     });
 
