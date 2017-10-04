@@ -109,6 +109,9 @@
                 await this.beacon.gatt.disconnect();
                 this.status = 'default';
                 this.beacon = null;
+                this.dispatchEvent(new CustomEvent('beacon-changed', {
+                    detail: { value: this.beacon }
+                }));
             }
         }
 
