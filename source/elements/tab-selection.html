@@ -45,8 +45,23 @@
                 super.ready();
                 this.addEventListener('click', (e) => {
                     const target = e.composedPath()[0];
-                    this.selected = target.value;
+                    if (target.value) {
+                        this.selected = target.value;
+                    }
                 });
+            }
+
+            connectedCallback() {
+                super.connectedCallback();
+                this.mutationObserver = new MutationObserver((mutations) => {
+                    this.observeSelected(this.selected);
+                });
+                this.mutationObserver.observe(this, { childList: true });
+            }
+
+            disconnectedCallback() {
+                super.disconnectedCallback();
+                this.mutationObserver.disconnect();
             }
 
             observeSelected(selected) {
