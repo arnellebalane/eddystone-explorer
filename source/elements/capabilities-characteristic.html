@@ -101,8 +101,14 @@
                     this.characteristic = await service.getCharacteristic(this.uuids.capabilities);
                     this.binaryData = await this.characteristic.readValue();
                 } else {
-                    this.binaryData = undefined;
+                    this.loading = true;
+                    this.dataLoaded = false;
                 }
+            }
+
+            observeBinaryData(binaryData) {
+                this.loading = false;
+                this.dataLoaded = true;
             }
 
             computeSpecVersion(binaryData) {
@@ -123,11 +129,6 @@
 
             computeVariableTxPowerSupported(binaryData) {
                 return Boolean(binaryData.getUint8(3) & 0x02);
-            }
-
-            observeBinaryData(binaryData) {
-                this.loading = false;
-                this.dataLoaded = true;
             }
 
             computeSupportedFrameTypes(binaryData) {
