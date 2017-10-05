@@ -60,18 +60,56 @@
                 <beacon-connection beacon="{{beacon}}" uuids="[[uuids]]"></beacon-connection>
             </header>
             <main id="characteristics" class="hidden">
-                <capabilities-characteristic service="[[service]]" uuids="[[uuids]]"></capabilities-characteristic>
-                <active-slot-characteristic service="[[service]]" uuids="[[uuids]]"></active-slot-characteristic>
-                <advertising-interval-characteristic service="[[service]]" uuids="[[uuids]]"></advertising-interval-characteristic>
-                <radio-tx-power-characteristic service="[[service]]" uuids="[[uuids]]"></radio-tx-power-characteristic>
-                <advertised-tx-power-characteristic service="[[service]]" uuids="[[uuids]]"></advertised-tx-power-characteristic>
-                <lock-state-characteristic service="[[service]]" uuids="[[uuids]]"></lock-state-characteristic>
-                <unlock-characteristic service="[[service]]" uuids="[[uuids]]"></unlock-characteristic>
-                <public-ecdh-key-characteristic service="[[service]]" uuids="[[uuids]]"></public-ecdh-key-characteristic>
-                <eid-identity-key-characteristic service="[[service]]" uuids="[[uuids]]"></eid-identity-key-characteristic>
-                <adv-slot-data-characteristic service="[[service]]" uuids="[[uuids]]"></adv-slot-data-characteristic>
-                <factory-reset-characteristic service="[[service]]" uuids="[[uuids]]"></factory-reset-characteristic>
-                <remain-connectable-characteristic service="[[service]]" uuids="[[uuids]]"></remain-connectable-characteristic>
+                <capabilities-characteristic
+                    service="[[service]]"
+                    uuids="[[uuids]]">
+                </capabilities-characteristic>
+                <active-slot-characteristic
+                    service="[[service]]"
+                    uuids="[[uuids]]"
+                    on-active-slot-changed="onActiveSlotChanged">
+                </active-slot-characteristic>
+                <advertising-interval-characteristic
+                    id="advertisingInterval"
+                    service="[[service]]"
+                    uuids="[[uuids]]">
+                </advertising-interval-characteristic>
+                <radio-tx-power-characteristic
+                    service="[[service]]"
+                    uuids="[[uuids]]">
+                </radio-tx-power-characteristic>
+                <advertised-tx-power-characteristic
+                    service="[[service]]"
+                    uuids="[[uuids]]">
+                </advertised-tx-power-characteristic>
+                <lock-state-characteristic
+                    service="[[service]]"
+                    uuids="[[uuids]]">
+                </lock-state-characteristic>
+                <unlock-characteristic
+                    service="[[service]]"
+                    uuids="[[uuids]]">
+                </unlock-characteristic>
+                <public-ecdh-key-characteristic
+                    service="[[service]]"
+                    uuids="[[uuids]]">
+                </public-ecdh-key-characteristic>
+                <eid-identity-key-characteristic
+                    service="[[service]]"
+                    uuids="[[uuids]]">
+                </eid-identity-key-characteristic>
+                <adv-slot-data-characteristic
+                    service="[[service]]"
+                    uuids="[[uuids]]">
+                </adv-slot-data-characteristic>
+                <factory-reset-characteristic
+                    service="[[service]]"
+                    uuids="[[uuids]]">
+                </factory-reset-characteristic>
+                <remain-connectable-characteristic
+                    service="[[service]]"
+                    uuids="[[uuids]]">
+                </remain-connectable-characteristic>
             </main>
         </div>
     </template>
@@ -118,6 +156,10 @@
                     this.$.characteristics.classList.add('hidden');
                     this.service = undefined;
                 }
+            }
+
+            onActiveSlotChanged(e) {
+                this.$.advertisingInterval.refresh();
             }
         }
 

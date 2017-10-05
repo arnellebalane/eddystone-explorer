@@ -76,12 +76,18 @@
                 }
             }
 
-            async observeActiveSlot(activeSlot) {
+            async observeActiveSlot(activeSlot, previousValue) {
                 const binaryData = new Uint8Array([activeSlot]);
 
                 this.loading = true;
                 await this.characteristic.writeValue(binaryData);
                 this.loading = false;
+
+                if (previousValue) {
+                    this.dispatchEvent(new CustomEvent('active-slot-changed', {
+                        detail: { value: activeSlot }
+                    }));
+                }
             }
         }
 
