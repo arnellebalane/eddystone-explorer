@@ -45,10 +45,6 @@
                         type: Boolean,
                         value: false
                     },
-                    binaryData: {
-                        type: Object,
-                        observer: 'observeBinaryData'
-                    },
                     activeSlot: {
                         type: String,
                         observer: 'observeActiveSlot'
@@ -60,7 +56,7 @@
             async observeService(service) {
                 if (service) {
                     this.characteristic = await service.getCharacteristic(this.uuids.activeSlot);
-                    this.binaryData = await this.characteristic.readValue();
+                    const binaryData = await this.characteristic.readValue();
 
                     const characteristic = await service.getCharacteristic(this.uuids.capabilities);
                     const capabilities = await characteristic.readValue();
@@ -70,16 +66,14 @@
                         slots.push({ label: `SLOT #${i + 1}`, value: i });
                     }
                     this.slots = slots;
-                    this.activeSlot = String(this.binaryData.getUint8(0));
+                    this.activeSlot = String(binaryData.getUint8(0));
+
+                    this.loading = false;
+                    this.dataLoaded = true;
                 } else {
                     this.loading = true;
                     this.dataLoaded = false;
                 }
-            }
-
-            observeBinaryData(binaryData) {
-                this.loading = false;
-                this.dataLoaded = true;
             }
 
             async observeActiveSlot(activeSlot) {
