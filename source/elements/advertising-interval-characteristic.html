@@ -20,7 +20,7 @@
             </section>
             <section class="padded messages">
                 <template is="dom-if" if="[[isVariableAdvIntervalSupported]]">
-                    <p>Writing a value to this characteristic will set the advertising interval for <strong>Slot #1</strong>.</p>
+                    <p>Writing a value to this characteristic will set the advertising interval for <strong>[[activeSlotLabel]]</strong>.</p>
                 </template>
                 <template is="dom-if" if="[[!isVariableAdvIntervalSupported]]">
                     <p class="warning">Because <strong>variable ADV interval</strong> is not supported, writing a value to this characteristic will set the advertising interval for all slots.</p>
@@ -52,6 +52,7 @@
                         value: false
                     },
                     advertisingInterval: String,
+                    activeSlotLabel: String,
                     isVariableAdvIntervalSupported: {
                         type: Boolean,
                         value: true
@@ -62,7 +63,12 @@
             async observeService(service) {
                 if (service) {
                     this.characteristic = await this.service.getCharacteristic(this.uuids.advertisingInterval);
+                    const characteristic = await this.service.getCharacteristic(this.uuids.activeSlot);
                     const binaryData = await this.characteristic.readValue();
+                    const activeSlotData = await characteristic.readValue();
+                    const activeSlot = activeSlotData.getUint8(0);
+
+                    this.activeSlotLabel = `Slot #${activeSlot + 1}`;
                     this.advertisingInterval = String(binaryData.getUint16(0));
 
                     this.loading = false;
@@ -79,7 +85,13 @@
 
             async refresh() {
                 this.loading = true;
+
+                const characteristic = await this.service.getCharacteristic(this.uuids.activeSlot);
                 const binaryData = await this.characteristic.readValue();
+                const activeSlotData = await characteristic.readValue();
+                const activeSlot = activeSlotData.getUint8(0);
+
+                this.activeSlotLabel = `Slot #${activeSlot + 1}`;
                 this.advertisingInterval = String(binaryData.getUint16(0));
                 this.loading = false;
             }
