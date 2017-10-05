@@ -57,21 +57,21 @@
         <div class="wrapper">
             <header>
                 <h2>Explore and configure your beacons that support Eddystone, an open beacon format from Google.</h2>
-                <beacon-connection beacon="{{beacon}}" service-uuid="[[serviceUuid]]"></beacon-connection>
+                <beacon-connection beacon="{{beacon}}" uuids="[[uuids]]"></beacon-connection>
             </header>
             <main id="characteristics" class="hidden">
-                <capabilities-characteristic service="[[service]]"></capabilities-characteristic>
-                <active-slot-characteristic service="[[service]]"></active-slot-characteristic>
-                <advertising-interval-characteristic service="[[service]]"></advertising-interval-characteristic>
-                <radio-tx-power-characteristic service="[[service]]"></radio-tx-power-characteristic>
-                <advertised-tx-power-characteristic service="[[service]]"></advertised-tx-power-characteristic>
-                <lock-state-characteristic service="[[service]]"></lock-state-characteristic>
-                <unlock-characteristic service="[[service]]"></unlock-characteristic>
-                <public-ecdh-key-characteristic service="[[service]]"></public-ecdh-key-characteristic>
-                <eid-identity-key-characteristic service="[[service]]"></eid-identity-key-characteristic>
-                <adv-slot-data-characteristic service="[[service]]"></adv-slot-data-characteristic>
-                <factory-reset-characteristic service="[[service]]"></factory-reset-characteristic>
-                <remain-connectable-characteristic service="[[service]]"></remain-connectable-characteristic>
+                <capabilities-characteristic service="[[service]]" uuids="[[uuids]]"></capabilities-characteristic>
+                <active-slot-characteristic service="[[service]]" uuids="[[uuids]]"></active-slot-characteristic>
+                <advertising-interval-characteristic service="[[service]]" uuids="[[uuids]]"></advertising-interval-characteristic>
+                <radio-tx-power-characteristic service="[[service]]" uuids="[[uuids]]"></radio-tx-power-characteristic>
+                <advertised-tx-power-characteristic service="[[service]]" uuids="[[uuids]]"></advertised-tx-power-characteristic>
+                <lock-state-characteristic service="[[service]]" uuids="[[uuids]]"></lock-state-characteristic>
+                <unlock-characteristic service="[[service]]" uuids="[[uuids]]"></unlock-characteristic>
+                <public-ecdh-key-characteristic service="[[service]]" uuids="[[uuids]]"></public-ecdh-key-characteristic>
+                <eid-identity-key-characteristic service="[[service]]" uuids="[[uuids]]"></eid-identity-key-characteristic>
+                <adv-slot-data-characteristic service="[[service]]" uuids="[[uuids]]"></adv-slot-data-characteristic>
+                <factory-reset-characteristic service="[[service]]" uuids="[[uuids]]"></factory-reset-characteristic>
+                <remain-connectable-characteristic service="[[service]]" uuids="[[uuids]]"></remain-connectable-characteristic>
             </main>
         </div>
     </template>
@@ -88,9 +88,23 @@
                         type: Object,
                         observer: 'observeBeacon'
                     },
-                    serviceUuid: {
-                        type: String,
-                        value: 'a3c87500-8ed3-4bdf-8a39-a01bebede295'
+                    uuids: {
+                        type: Object,
+                        value: () => ({
+                            eddystone: 'a3c87500-8ed3-4bdf-8a39-a01bebede295',
+                            capabilities: 'a3c87501-8ed3-4bdf-8a39-a01bebede295',
+                            activeSlot: 'a3c87502-8ed3-4bdf-8a39-a01bebede295',
+                            advertisingInterval: 'a3c87503-8ed3-4bdf-8a39-a01bebede295',
+                            radioTxPower: 'a3c87504-8ed3-4bdf-8a39-a01bebede295',
+                            advertisedTxPower: 'a3c87505-8ed3-4bdf-8a39-a01bebede295',
+                            lockState: 'a3c87506-8ed3-4bdf-8a39-a01bebede295',
+                            unlock: 'a3c87507-8ed3-4bdf-8a39-a01bebede295',
+                            publicEcdhKey: 'a3c87508-8ed3-4bdf-8a39-a01bebede295',
+                            eidIdentityKey: 'a3c87509-8ed3-4bdf-8a39-a01bebede295',
+                            advSlotData: 'a3c8750a-8ed3-4bdf-8a39-a01bebede295',
+                            factoryReset: 'a3c8750b-8ed3-4bdf-8a39-a01bebede295',
+                            remainConnectable: 'a3c8750c-8ed3-4bdf-8a39-a01bebede295'
+                        })
                     },
                     service: Object
                 };
@@ -99,7 +113,7 @@
             async observeBeacon(beacon) {
                 if (beacon) {
                     this.$.characteristics.classList.remove('hidden');
-                    this.service = await beacon.gatt.getPrimaryService(this.serviceUuid);
+                    this.service = await beacon.gatt.getPrimaryService(this.uuids.eddystone);
                 } else {
                     this.$.characteristics.classList.add('hidden');
                     this.service = undefined;

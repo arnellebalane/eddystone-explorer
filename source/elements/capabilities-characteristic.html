@@ -51,10 +51,7 @@
                         type: Object,
                         observer: 'observeService'
                     },
-                    characteristicUuid: {
-                        type: String,
-                        value: 'a3c87501-8ed3-4bdf-8a39-a01bebede295'
-                    },
+                    uuids: Object,
                     characteristic: Object,
                     loading: {
                         type: Boolean,
@@ -101,7 +98,7 @@
 
             async observeService(service) {
                 if (service) {
-                    this.characteristic = await service.getCharacteristic(this.characteristicUuid);
+                    this.characteristic = await service.getCharacteristic(this.uuids.capabilities);
                     this.binaryData = await this.characteristic.readValue();
                 } else {
                     this.binaryData = undefined;
