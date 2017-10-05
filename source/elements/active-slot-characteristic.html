@@ -1,4 +1,5 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-repeat.html">
 <link rel="import" href="characteristic-styles.html">
 <link rel="import" href="characteristic-template.html">
 <link rel="import" href="tab-selection.html">
@@ -7,12 +8,12 @@
     <template>
         <style include="characteristic-styles"></style>
 
-        <characteristic-template number="2" name="Active Slot" loading="{{loading}}">
+        <characteristic-template number="2" name="Active Slot" loading="[[loading]]" data-loaded="[[dataLoaded]]">
             <section class="padded">
-                <tab-selection selected="{{activeSlot}}" selected-class="success" loading="{{loading}}">
-                    <button value="1">Slot #1</button>
-                    <button value="2">Slot #2</button>
-                    <button value="3">Slot #3</button>
+                <tab-selection selected="{{activeSlot}}" selected-class="success" loading="[[loading]]">
+                    <template is="dom-repeat" items="[[slots]]">
+                        <button value="[[item.value]]">[[item.label]]</button>
+                    </template>
                 </tab-selection>
             </section>
             <section class="padded messages">
@@ -30,16 +31,63 @@
 
             static get properties() {
                 return {
+                    service: {
+                        type: Object,
+                        observer: 'observeService'
+                    },
+                    uuids: Object,
+                    characteristic: Object,
+                    loading: {
+                        type: Boolean,
+                        value: true
+                    },
+                    dataLoaded: {
+                        type: Boolean,
+                        value: false
+                    },
+                    binaryData: {
+                        type: Object,
+                        observer: 'observeBinaryData'
+                    },
                     activeSlot: {
                         type: String,
-                        value: '1',
                         observer: 'observeActiveSlot'
-                    }
+                    },
+                    slots: Array
                 };
             }
 
-            observeActiveSlot(activeSlot) {
-                console.log(activeSlot);
+            async observeService(service) {
+                if (service) {
+                    this.characteristic = await service.getCharacteristic(this.uuids.activeSlot);
+                    this.binaryData = await this.characteristic.readValue();
+
+                    const characteristic = await service.getCharacteristic(this.uuids.capabilities);
+                    const capabilities = await characteristic.readValue();
+                    const maxSupportedTotalSlots = capabilities.getUint8(1);
+                    const slots = [];
+                    for (let i = 0; i < maxSupportedTotalSlots; i++) {
+                        slots.push({ label: `SLOT #${i + 1}`, value: i });
+                    }
+                    this.slots = slots;
+                    this.activeSlot = String(this.binaryData.getUint8(0));
+                } else {
+                    this.loading = true;
+                    this.dataLoaded = false;
+                }
+            }
+
+            observeBinaryData(binaryData) {
+                this.loading = false;
+                this.dataLoaded = true;
+            }
+
+            async observeActiveSlot(activeSlot) {
+                const binaryData = new Uint8Array([activeSlot]);
+
+                this.loading = true;
+                await this.characteristic.writeValue(binaryData);
+                this.loading = false;
             }
         }
 
