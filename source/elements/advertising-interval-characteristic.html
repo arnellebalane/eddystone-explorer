@@ -10,11 +10,11 @@
     <template>
         <style include="characteristic-styles"></style>
 
-        <characteristic-template number="3" name="Advertising Interval">
+        <characteristic-template number="3" name="Advertising Interval" loading="[[loading]]" data-loaded="[[dataLoaded]]">
             <section>
                 <characteristic-value label="Advertising Interval">
                     <value-with-unit unit="ms">
-                        <flexible-input value="700" on-value-changed="onAdvertisingIntervalChanged"></flexible-input>
+                        <flexible-input value="{{advertisingInterval}}" on-value-changed="onAdvertisingIntervalChanged"></flexible-input>
                     </value-with-unit>
                 </characteristic-value>
             </section>
@@ -37,6 +37,21 @@
 
             static get properties() {
                 return {
+                    service: {
+                        type: Object,
+                        observer: 'observeService'
+                    },
+                    uuids: Object,
+                    characteristic: Object,
+                    loading: {
+                        type: Boolean,
+                        value: true
+                    },
+                    dataLoaded: {
+                        type: Boolean,
+                        value: false
+                    },
+                    advertisingInterval: String,
                     isVariableAdvIntervalSupported: {
                         type: Boolean,
                         value: true
@@ -44,8 +59,29 @@
                 };
             }
 
+            async observeService(service) {
+                if (service) {
+                    this.characteristic = await this.service.getCharacteristic(this.uuids.advertisingInterval);
+                    const binaryData = await this.characteristic.readValue();
+                    this.advertisingInterval = String(binaryData.getUint16(0));
+
+                    this.loading = false;
+                    this.dataLoaded = true;
+                } else {
+                    this.loading = true;
+                    this.dataLoaded = false;
+                }
+            }
+
             onAdvertisingIntervalChanged(e) {
                 console.log(e.detail.value);
+            }
+
+            async refresh() {
+                this.loading = true;
+                const binaryData = await this.characteristic.readValue();
+                this.advertisingInterval = String(binaryData.getUint16(0));
+                this.loading = false;
             }
         }
 
