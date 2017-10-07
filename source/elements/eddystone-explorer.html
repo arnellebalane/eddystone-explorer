@@ -61,6 +61,7 @@
             </header>
             <main id="characteristics" class="hidden">
                 <capabilities-characteristic
+                    data="{{data}}"
                     service="[[service]]"
                     uuids="[[uuids]]">
                 </capabilities-characteristic>
@@ -144,7 +145,11 @@
                             remainConnectable: 'a3c8750c-8ed3-4bdf-8a39-a01bebede295'
                         })
                     },
-                    service: Object
+                    service: Object,
+                    data: {
+                        type: Object,
+                        value: () => ({})
+                    }
                 };
             }
 

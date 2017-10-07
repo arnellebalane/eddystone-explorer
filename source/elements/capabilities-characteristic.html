@@ -13,14 +13,14 @@
 
         <characteristic-template number="1" name="Capabilities" loading="[[loading]]" data-loaded="[[dataLoaded]]">
             <section>
-                <characteristic-value label="Spec version" value="[[specVersion]]"></characteristic-value>
-                <characteristic-value label="Max supported total slots" value="[[maxSupportedTotalSlots]]"></characteristic-value>
-                <characteristic-value label="Max supported EID slots" value="[[maxSupportedEidSlots]]"></characteristic-value>
-                <characteristic-value label="Variable ADV interval supported?" value="[[variableAdvIntervalSupported]]"></characteristic-value>
-                <characteristic-value label="Variable Tx power supported?" value="[[variableTxPowerSupported]]"></characteristic-value>
+                <characteristic-value label="Spec version" value="[[data.specVersion]]"></characteristic-value>
+                <characteristic-value label="Max supported total slots" value="[[data.maxSupportedTotalSlots]]"></characteristic-value>
+                <characteristic-value label="Max supported EID slots" value="[[data.maxSupportedEidSlots]]"></characteristic-value>
+                <characteristic-value label="Variable ADV interval supported?" value="[[data.variableAdvIntervalSupported]]"></characteristic-value>
+                <characteristic-value label="Variable Tx power supported?" value="[[data.variableTxPowerSupported]]"></characteristic-value>
                 <characteristic-value label="Supported frame types">
                     <items-availability>
-                        <template is="dom-repeat" items="[[supportedFrameTypes]]">
+                        <template is="dom-repeat" items="[[data.supportedFrameTypes]]">
                             <template is="dom-if" if="[[item.available]]">
                                 <p class="available">[[item.name]]</p>
                             </template>
@@ -32,7 +32,7 @@
                 </characteristic-value>
                 <characteristic-value label="Supported radio Tx power">
                     <value-with-unit unit="dBm">
-                        <p>[[supportedRadioTxPowers]]</p>
+                        <p>[[data.supportedRadioTxPowers]]</p>
                     </value-with-unit>
                 </characteristic-value>
             </section>
@@ -61,37 +61,9 @@
                         type: Boolean,
                         value: false
                     },
-                    binaryData: {
+                    data: {
                         type: Object,
-                        observer: 'observeBinaryData'
-                    },
-                    specVersion: {
-                        type: Number,
-                        computed: 'computeSpecVersion(binaryData)'
-                    },
-                    maxSupportedTotalSlots: {
-                        type: Number,
-                        computed: 'computeMaxSupportedTotalSlots(binaryData)'
-                    },
-                    maxSupportedEidSlots: {
-                        type: Number,
-                        computed: 'computeMaxSupportedEidSlots(binaryData)'
-                    },
-                    variableAdvIntervalSupported: {
-                        type: Boolean,
-                        computed: 'computeVariableAdvIntervalSupported(binaryData)'
-                    },
-                    variableTxPowerSupported: {
-                        type: Boolean,
-                        computed: 'computeVariableTxPowerSupported(binaryData)'
-                    },
-                    supportedFrameTypes: {
-                        type: Array,
-                        computed: 'computeSupportedFrameTypes(binaryData)'
-                    },
-                    supportedRadioTxPowers: {
-                        type: String,
-                        computed: 'computeSupportedRadioTxPowers(binaryData)'
+                        notify: true
                     }
                 };
             }
@@ -99,16 +71,26 @@
             async observeService(service) {
                 if (service) {
                     this.characteristic = await service.getCharacteristic(this.uuids.capabilities);
-                    this.binaryData = await this.characteristic.readValue();
+                    const binaryData = await this.characteristic.readValue();
+
+                    this.setProperties({
+                        data: {
+                            specVersion: this.computeSpecVersion(binaryData),
+                            maxSupportedTotalSlots: this.computeMaxSupportedTotalSlots(binaryData),
+                            maxSupportedEidSlots: this.computeMaxSupportedEidSlots(binaryData),
+                            variableAdvIntervalSupported: this.computeVariableAdvIntervalSupported(binaryData),
+                            variableTxPowerSupported: this.computeVariableTxPowerSupported(binaryData),
+                            supportedFrameTypes: this.computeSupportedFrameTypes(binaryData),
+                            supportedRadioTxPowers: this.computeSupportedRadioTxPowers(binaryData)
+                        }
+                    });
+
+                    this.loading = false;
+                    this.dataLoaded = true;
                 } else {
                     this.loading = true;
                     this.dataLoaded = false;
                 }
-            }
-
-            observeBinaryData(binaryData) {
-                this.loading = false;
-                this.dataLoaded = true;
             }
 
             computeSpecVersion(binaryData) {
