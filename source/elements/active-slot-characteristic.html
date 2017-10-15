@@ -10,7 +10,7 @@
 
         <characteristic-template number="2" name="Active Slot" loading="[[loading]]" data-loaded="[[dataLoaded]]">
             <section class="padded">
-                <tab-selection selected="{{activeSlot}}" selected-class="success" loading="[[loading]]">
+                <tab-selection selected="{{data.activeSlot}}" selected-class="success" loading="[[loading]]">
                     <template is="dom-repeat" items="[[slots]]">
                         <button value="[[item.value]]">[[item.label]]</button>
                     </template>
@@ -43,10 +43,6 @@
                         type: Boolean,
                         value: false
                     },
-                    activeSlot: {
-                        type: String,
-                        observer: 'observeActiveSlot'
-                    },
                     data: {
                         type: Object,
                         notify: true
@@ -57,7 +53,8 @@
 
             static get observers() {
                 return [
-                    'initializeElement(service, loaded, data.maxSupportedTotalSlots)'
+                    'initializeElement(service, loaded, data.maxSupportedTotalSlots)',
+                    'observeActiveSlot(data.activeSlot)'
                 ];
             }
 
@@ -72,9 +69,11 @@
                     for (let i = 0; i < maxSupportedTotalSlots; i++) {
                         slots.push({ label: `SLOT #${i + 1}`, value: i });
                     }
-                    this.slots = slots;
-                    this.activeSlot = String(binaryData.getUint8(0));
 
+                    this.slots = slots;
+                    this.data = Object.assign({}, this.data, {
+                        activeSlot: binaryData.getUint8(0)
+                    });
                     this.loading = false;
                     this.dataLoaded = true;
                 } else {
@@ -83,8 +82,8 @@
                 }
             }
 
-            async observeActiveSlot(activeSlot, previousValue) {
-                if (!previousValue) return;
+            async observeActiveSlot(activeSlot) {
+                if (activeSlot === undefined) return;
 
                 const binaryData = new Uint8Array([activeSlot]);
 
