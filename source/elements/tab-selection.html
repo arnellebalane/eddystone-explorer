@@ -28,7 +28,7 @@
             static get properties() {
                 return {
                     selected: {
-                        type: String,
+                        type: Object,
                         observer: 'observeSelected',
                         notify: true
                     },
@@ -46,7 +46,7 @@
                 this.addEventListener('click', (e) => {
                     const target = e.composedPath()[0];
                     if (target.value) {
-                        this.selected = target.value;
+                        this.selected = this.attemptParseValue(target.value);
                     }
                 });
             }
@@ -67,7 +67,7 @@
             observeSelected(selected) {
                 const children = Array.from(this.children);
                 children.forEach((child) => (
-                    child.value === selected
+                    this.attemptParseValue(child.value) === selected
                         ? child.classList.add(this.selectedClass)
                         : child.classList.remove(this.selectedClass)
                 ));
@@ -78,6 +78,14 @@
                     this.classList.add('loading');
                 } else {
                     this.classList.remove('loading');
+                }
+            }
+
+            attemptParseValue(value) {
+                try {
+                    return JSON.parse(value);
+                } catch (e) {
+                    return value;
                 }
             }
         }
