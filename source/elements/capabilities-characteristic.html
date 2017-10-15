@@ -47,12 +47,10 @@
 
             static get properties() {
                 return {
-                    service: {
-                        type: Object,
-                        observer: 'observeService'
-                    },
+                    service: Object,
                     uuids: Object,
                     characteristic: Object,
+                    loaded: Boolean,
                     loading: {
                         type: Boolean,
                         value: true
@@ -68,23 +66,26 @@
                 };
             }
 
-            async observeService(service) {
-                if (service) {
+            static get observers() {
+                return [
+                    'initializeElement(service, loaded)'
+                ];
+            }
+
+            async initializeElement(service, loaded) {
+                if (service && loaded) {
                     this.characteristic = await service.getCharacteristic(this.uuids.capabilities);
                     const binaryData = await this.characteristic.readValue();
 
-                    this.setProperties({
-                        data: {
-                            specVersion: this.computeSpecVersion(binaryData),
-                            maxSupportedTotalSlots: this.computeMaxSupportedTotalSlots(binaryData),
-                            maxSupportedEidSlots: this.computeMaxSupportedEidSlots(binaryData),
-                            variableAdvIntervalSupported: this.computeVariableAdvIntervalSupported(binaryData),
-                            variableTxPowerSupported: this.computeVariableTxPowerSupported(binaryData),
-                            supportedFrameTypes: this.computeSupportedFrameTypes(binaryData),
-                            supportedRadioTxPowers: this.computeSupportedRadioTxPowers(binaryData)
-                        }
+                    this.data = Object.assign({}, this.data, {
+                        specVersion: this.computeSpecVersion(binaryData),
+                        maxSupportedTotalSlots: this.computeMaxSupportedTotalSlots(binaryData),
+                        maxSupportedEidSlots: this.computeMaxSupportedEidSlots(binaryData),
+                        variableAdvIntervalSupported: this.computeVariableAdvIntervalSupported(binaryData),
+                        variableTxPowerSupported: this.computeVariableTxPowerSupported(binaryData),
+                        supportedFrameTypes: this.computeSupportedFrameTypes(binaryData),
+                        supportedRadioTxPowers: this.computeSupportedRadioTxPowers(binaryData)
                     });
-
                     this.loading = false;
                     this.dataLoaded = true;
                 } else {

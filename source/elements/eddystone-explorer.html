@@ -63,53 +63,64 @@
                 <capabilities-characteristic
                     data="{{data}}"
                     service="[[service]]"
-                    uuids="[[uuids]]">
+                    uuids="[[uuids]]"
+                    loaded="[[loaded]]">
                 </capabilities-characteristic>
                 <active-slot-characteristic
                     service="[[service]]"
                     uuids="[[uuids]]"
-                    on-active-slot-changed="onActiveSlotChanged">
+                    loaded="[[loaded]]">
                 </active-slot-characteristic>
                 <advertising-interval-characteristic
                     id="advertisingInterval"
                     service="[[service]]"
-                    uuids="[[uuids]]">
+                    uuids="[[uuids]]"
+                    loaded="[[loaded]]">
                 </advertising-interval-characteristic>
                 <radio-tx-power-characteristic
                     service="[[service]]"
-                    uuids="[[uuids]]">
+                    uuids="[[uuids]]"
+                    loaded="[[loaded]]">
                 </radio-tx-power-characteristic>
                 <advertised-tx-power-characteristic
                     service="[[service]]"
-                    uuids="[[uuids]]">
+                    uuids="[[uuids]]"
+                    loaded="[[loaded]]">
                 </advertised-tx-power-characteristic>
                 <lock-state-characteristic
                     service="[[service]]"
-                    uuids="[[uuids]]">
+                    uuids="[[uuids]]"
+                    loaded="[[loaded]]">
                 </lock-state-characteristic>
                 <unlock-characteristic
                     service="[[service]]"
-                    uuids="[[uuids]]">
+                    uuids="[[uuids]]"
+                    loaded="[[loaded]]">
                 </unlock-characteristic>
                 <public-ecdh-key-characteristic
                     service="[[service]]"
-                    uuids="[[uuids]]">
+                    uuids="[[uuids]]"
+                    loaded="[[loaded]]">
                 </public-ecdh-key-characteristic>
                 <eid-identity-key-characteristic
                     service="[[service]]"
-                    uuids="[[uuids]]">
+                    uuids="[[uuids]]"
+                    loaded="[[loaded]]">
                 </eid-identity-key-characteristic>
                 <adv-slot-data-characteristic
                     service="[[service]]"
-                    uuids="[[uuids]]">
+                    uuids="[[uuids]]"
+                    loaded="[[loaded]]">
                 </adv-slot-data-characteristic>
                 <factory-reset-characteristic
                     service="[[service]]"
-                    uuids="[[uuids]]">
+                    uuids="[[uuids]]"
+                    loaded="[[loaded]]">
                 </factory-reset-characteristic>
                 <remain-connectable-characteristic
                     service="[[service]]"
-                    uuids="[[uuids]]">
+                    uuids="[[uuids]]"
+                    loaded="[[loaded]]">
                 </remain-connectable-characteristic>
             </main>
         </div>
@@ -148,9 +159,19 @@
                     service: Object,
                     data: {
                         type: Object,
-                        value: () => ({})
+                        value: () => ({}),
+                        observer: 'observeData'
+                    },
+                    loaded: {
+                        type: Boolean,
+                        value: false
                     }
                 };
+            }
+
+            ready() {
+                super.ready();
+                this.loaded = true;
             }
 
             async observeBeacon(beacon) {
@@ -163,8 +184,8 @@
                 }
             }
 
-            onActiveSlotChanged(e) {
-                this.$.advertisingInterval.refresh();
+            observeData(data) {
+                console.log(data);
             }
         }
 
