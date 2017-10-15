@@ -31,12 +31,10 @@
 
             static get properties() {
                 return {
-                    service: {
-                        type: Object,
-                        observer: 'observeService'
-                    },
+                    service: Object,
                     uuids: Object,
                     characteristic: Object,
+                    loaded: Boolean,
                     loading: {
                         type: Boolean,
                         value: true
@@ -49,18 +47,27 @@
                         type: String,
                         observer: 'observeActiveSlot'
                     },
+                    data: {
+                        type: Object,
+                        notify: true
+                    },
                     slots: Array
                 };
             }
 
-            async observeService(service) {
-                if (service) {
+            static get observers() {
+                return [
+                    'initializeElement(service, loaded, data.maxSupportedTotalSlots)'
+                ];
+            }
+
+            async initializeElement(service, loaded, maxSupportedTotalSlots) {
+                if (service && loaded && maxSupportedTotalSlots) {
+                    if (this.characteristic) return;
+
                     this.characteristic = await service.getCharacteristic(this.uuids.activeSlot);
                     const binaryData = await this.characteristic.readValue();
 
-                    const characteristic = await service.getCharacteristic(this.uuids.capabilities);
-                    const capabilities = await characteristic.readValue();
-                    const maxSupportedTotalSlots = capabilities.getUint8(1);
                     const slots = [];
                     for (let i = 0; i < maxSupportedTotalSlots; i++) {
                         slots.push({ label: `SLOT #${i + 1}`, value: i });
@@ -77,17 +84,17 @@
             }
 
             async observeActiveSlot(activeSlot, previousValue) {
+                if (!previousValue) return;
+
                 const binaryData = new Uint8Array([activeSlot]);
 
                 this.loading = true;
                 await this.characteristic.writeValue(binaryData);
                 this.loading = false;
 
-                if (previousValue) {
-                    this.dispatchEvent(new CustomEvent('active-slot-changed', {
-                        detail: { value: activeSlot }
-                    }));
-                }
+                this.dispatchEvent(new CustomEvent('active-slot-changed', {
+                    detail: { value: activeSlot }
+                }));
             }
         }
 

@@ -74,6 +74,8 @@
 
             async initializeElement(service, loaded) {
                 if (service && loaded) {
+                    if (this.characteristic) return;
+
                     this.characteristic = await service.getCharacteristic(this.uuids.capabilities);
                     const binaryData = await this.characteristic.readValue();
 
