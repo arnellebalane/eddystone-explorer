@@ -71,9 +71,9 @@
                     }
 
                     this.slots = slots;
-                    this.data = Object.assign({}, this.data, {
-                        activeSlot: binaryData.getUint8(0)
-                    });
+                    this.data.activeSlot = binaryData.getUint8(0);
+                    this.notifyPath('data.activeSlot');
+
                     this.loading = false;
                     this.dataLoaded = true;
                 } else {
@@ -85,15 +85,15 @@
             async observeActiveSlot(activeSlot) {
                 if (activeSlot === undefined) return;
 
-                const binaryData = new Uint8Array([activeSlot]);
-
                 this.loading = true;
-                await this.characteristic.writeValue(binaryData);
-                this.loading = false;
 
+                const binaryData = new Uint8Array([activeSlot]);
+                await this.characteristic.writeValue(binaryData);
                 this.dispatchEvent(new CustomEvent('active-slot-changed', {
                     detail: { value: activeSlot }
                 }));
+
+                this.loading = false;
             }
         }
 

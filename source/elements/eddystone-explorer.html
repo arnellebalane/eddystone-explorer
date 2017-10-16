@@ -74,6 +74,7 @@
                 </active-slot-characteristic>
                 <advertising-interval-characteristic
                     id="advertisingInterval"
+                    data="{{data}}"
                     service="[[service]]"
                     uuids="[[uuids]]"
                     loaded="[[loaded]]">
@@ -170,6 +171,12 @@
                 };
             }
 
+            static get observers() {
+                return [
+                    'observeActiveSlot(data.activeSlot)'
+                ];
+            }
+
             ready() {
                 super.ready();
                 this.loaded = true;
@@ -187,6 +194,11 @@
 
             observeData(data) {
                 console.log(data);
+            }
+
+            observeActiveSlot(activeSlot) {
+                if (activeSlot === undefined) return;
+                this.$.advertisingInterval.refresh();
             }
         }
 

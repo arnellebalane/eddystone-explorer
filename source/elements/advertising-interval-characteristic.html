@@ -14,15 +14,15 @@
             <section>
                 <characteristic-value label="Advertising Interval">
                     <value-with-unit unit="ms">
-                        <flexible-input value="{{advertisingInterval}}" on-value-changed="onAdvertisingIntervalChanged"></flexible-input>
+                        <flexible-input value="{{data.advertisingInterval}}" on-value-changed="onAdvertisingIntervalChanged"></flexible-input>
                     </value-with-unit>
                 </characteristic-value>
             </section>
             <section class="padded messages">
-                <template is="dom-if" if="[[isVariableAdvIntervalSupported]]">
-                    <p>Writing a value to this characteristic will set the advertising interval for <strong>[[activeSlotLabel]]</strong>.</p>
+                <template is="dom-if" if="[[data.variableAdvIntervalSupported]]">
+                    <p>Writing a value to this characteristic will set the advertising interval for <strong>[[getActiveSlotLabel(data.activeSlot)]]</strong>.</p>
                 </template>
-                <template is="dom-if" if="[[!isVariableAdvIntervalSupported]]">
+                <template is="dom-if" if="[[!data.variableAdvIntervalSupported]]">
                     <p class="warning">Because <strong>variable ADV interval</strong> is not supported, writing a value to this characteristic will set the advertising interval for all slots.</p>
                 </template>
             </section>
@@ -37,12 +37,10 @@
 
             static get properties() {
                 return {
-                    service: {
-                        type: Object,
-                        observer: 'observeService'
-                    },
+                    service: Object,
                     uuids: Object,
                     characteristic: Object,
+                    loaded: Boolean,
                     loading: {
                         type: Boolean,
                         value: true
@@ -51,25 +49,29 @@
                         type: Boolean,
                         value: false
                     },
-                    advertisingInterval: String,
-                    activeSlotLabel: String,
-                    isVariableAdvIntervalSupported: {
-                        type: Boolean,
-                        value: true
+                    data: {
+                        type: Object,
+                        notify: true
                     }
                 };
             }
 
-            async observeService(service) {
-                if (service) {
-                    this.characteristic = await this.service.getCharacteristic(this.uuids.advertisingInterval);
-                    const characteristic = await this.service.getCharacteristic(this.uuids.activeSlot);
-                    const binaryData = await this.characteristic.readValue();
-                    const activeSlotData = await characteristic.readValue();
-                    const activeSlot = activeSlotData.getUint8(0);
+            static get observers() {
+                return [
+                    'initializeElement(service, loaded, data.activeSlot)',
+                    'onAdvertisingIntervalChanged(data.advertisingInterval)'
+                ];
+            }
 
-                    this.activeSlotLabel = `Slot #${activeSlot + 1}`;
-                    this.advertisingInterval = String(binaryData.getUint16(0));
+            async initializeElement(service, loaded, activeSlot) {
+                if (service && loaded && activeSlot !== undefined) {
+                    if (this.characteristic) return;
+
+                    this.characteristic = await this.service.getCharacteristic(this.uuids.advertisingInterval);
+                    const binaryData = await this.characteristic.readValue();
+
+                    this.data.advertisingInterval = binaryData.getUint16(0);
+                    this.notifyPath('data.advertisingInterval');
 
                     this.loading = false;
                     this.dataLoaded = true;
@@ -79,21 +81,24 @@
                 }
             }
 
-            onAdvertisingIntervalChanged(e) {
-                console.log(e.detail.value);
+            onAdvertisingIntervalChanged(advertisingInterval) {
+                console.log(advertisingInterval);
             }
 
             async refresh() {
+                if (!this.characteristic) return;
+
                 this.loading = true;
 
-                const characteristic = await this.service.getCharacteristic(this.uuids.activeSlot);
                 const binaryData = await this.characteristic.readValue();
-                const activeSlotData = await characteristic.readValue();
-                const activeSlot = activeSlotData.getUint8(0);
+                this.data.advertisingInterval = binaryData.getUint16(0);
+                this.notifyPath('data.advertisingInterval');
 
-                this.activeSlotLabel = `Slot #${activeSlot + 1}`;
-                this.advertisingInterval = String(binaryData.getUint16(0));
                 this.loading = false;
+            }
+
+            getActiveSlotLabel(activeSlot) {
+                return `Slot #${activeSlot + 1}`;
             }
         }
 
