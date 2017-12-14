@@ -14,17 +14,23 @@
             <section>
                 <characteristic-value label="Advertising Interval">
                     <value-with-unit unit="ms">
-                        <flexible-input value="{{data.advertisingInterval}}" on-value-changed="onAdvertisingIntervalChanged"></flexible-input>
+                        <flexible-input
+                            id="advertisingInterval"
+                            value="[[data.advertisingInterval]]">
+                        </flexible-input>
                     </value-with-unit>
                 </characteristic-value>
             </section>
-            <section class="padded messages">
-                <template is="dom-if" if="[[data.variableAdvIntervalSupported]]">
-                    <p>Writing a value to this characteristic will set the advertising interval for <strong>[[getActiveSlotLabel(data.activeSlot)]]</strong>.</p>
-                </template>
-                <template is="dom-if" if="[[!data.variableAdvIntervalSupported]]">
-                    <p class="warning">Because <strong>variable ADV interval</strong> is not supported, writing a value to this characteristic will set the advertising interval for all slots.</p>
-                </template>
+            <section class="flex padded">
+                <div class="messages">
+                    <template is="dom-if" if="[[data.variableAdvIntervalSupported]]">
+                        <p>Writing a value to this characteristic will set the advertising interval for <strong>[[getActiveSlotLabel(data.activeSlot)]]</strong>.</p>
+                    </template>
+                    <template is="dom-if" if="[[!data.variableAdvIntervalSupported]]">
+                        <p class="warning">Because <strong>variable ADV interval</strong> is not supported, writing a value to this characteristic will set the advertising interval for all slots.</p>
+                    </template>
+                </div>
+                <button class="info" on-click="onUpdateClick">Update</button>
             </section>
         </characteristic-template>
     </template>
@@ -58,8 +64,7 @@
 
             static get observers() {
                 return [
-                    'initializeElement(service, loaded, data.activeSlot)',
-                    'onAdvertisingIntervalChanged(data.advertisingInterval)'
+                    'initializeElement(service, loaded, data.activeSlot)'
                 ];
             }
 
@@ -81,10 +86,6 @@
                 }
             }
 
-            onAdvertisingIntervalChanged(advertisingInterval) {
-                console.log(advertisingInterval);
-            }
-
             async refresh() {
                 if (!this.characteristic) return;
 
@@ -92,6 +93,20 @@
 
                 const binaryData = await this.characteristic.readValue();
                 this.data.advertisingInterval = binaryData.getUint16(0);
+                this.notifyPath('data.advertisingInterval');
+
+                this.loading = false;
+            }
+
+            async onUpdateClick() {
+                this.loading = true;
+
+                const advertisingInterval = parseInt(this.$.advertisingInterval.value, 10);
+                const binaryData = new ArrayBuffer(2);
+                new DataView(binaryData).setUint16(0, advertisingInterval);
+
+                await this.characteristic.writeValue(binaryData);
+                this.data.advertisingInterval = advertisingInterval;
                 this.notifyPath('data.advertisingInterval');
 
                 this.loading = false;
