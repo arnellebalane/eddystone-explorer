@@ -1,0 +1,25 @@
+{
+  "name": "eddystone-explorer",
+  "version": "1.0.0",
+  "description": "Explore and configure beacons that support Eddystone",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arnellebalane/eddystone-explorer.git"
+  },
+  "keywords": [
+    "eddystone",
+    "beacons",
+    "physical-web",
+    "bluetooth"
+  ],
+  "author": "Arnelle Balane <arnellebalane@gmail.com> (https://arnellebalane.com/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/arnellebalane/eddystone-explorer/issues"
+  },
+  "homepage": "https://github.com/arnellebalane/eddystone-explorer#readme"
+}
