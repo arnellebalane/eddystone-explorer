@@ -6,23 +6,23 @@
                 <beacon-connection></beacon-connection>
             </header>
         </div>
+
+        <main v-if="beacon">
+            <capabilities-characteristic></capabilities-characteristic>
+        </main>
     </div>
 </template>
 
 <script>
     import { mapState } from 'vuex';
     import BeaconConnection from './beacon-connection.vue';
+    import CapabilitiesCharacteristic from './capabilities-characteristic.vue';
 
     export default {
         computed: mapState(['beacon']),
-        watch: {
-            beacon(beacon) {
-                console.log('beacon changed');
-                console.log(beacon);
-            }
-        },
         components: {
-            'beacon-connection': BeaconConnection
+            'beacon-connection': BeaconConnection,
+            'capabilities-characteristic': CapabilitiesCharacteristic
         }
     };
 </script>
