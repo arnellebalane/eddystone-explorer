@@ -20,16 +20,14 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex';
-
     export default {
+        props: ['service'],
         data() {
             return {
                 status: 'default',
                 beacon: null
             };
         },
-        computed: mapState(['uuids']),
         methods: {
             async requestDevice() {
                 this.status = 'scanning';
@@ -37,7 +35,7 @@
                 try {
                     this.beacon = await navigator.bluetooth.requestDevice({
                         filters: [
-                            { services: [this.uuids.eddystone] }
+                            { services: [this.service] }
                         ]
                     });
 

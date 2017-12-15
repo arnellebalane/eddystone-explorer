@@ -3,7 +3,7 @@
         <div class="wrapper">
             <header>
                 <h2>Explore and configure your beacons that support Eddystone, an open beacon format from Google.</h2>
-                <beacon-connection></beacon-connection>
+                <beacon-connection v-bind:service="uuids.eddystone"></beacon-connection>
             </header>
         </div>
 
@@ -19,7 +19,7 @@
     import CapabilitiesCharacteristic from './capabilities-characteristic.vue';
 
     export default {
-        computed: mapState(['beacon']),
+        computed: mapState(['beacon', 'uuids']),
         components: {
             'beacon-connection': BeaconConnection,
             'capabilities-characteristic': CapabilitiesCharacteristic
