@@ -9,51 +9,53 @@
             <button class="scanning">Scanning...</button>
         </template>
         <template v-else-if="status === 'connecting'">
-            <p>Connecting to "{{ _beacon.name }}"</p>
+            <p>Connecting to "{{ beacon.name }}"</p>
             <button class="connecting">Connecting...</button>
         </template>
         <template v-else-if="status === 'connected'">
-            <p>Connected to "{{ _beacon.name }}"</p>
+            <p>Connected to "{{ beacon.name }}"</p>
             <button class="connected" v-on:click="disconnect">Disconnect</button>
         </template>
     </div>
 </template>
 
 <script>
+    import { mapState } from 'vuex';
+
     export default {
-        props: ['beacon', 'uuids'],
         data() {
             return {
                 status: 'default',
-                _beacon: null
+                beacon: null
             };
         },
+        computed: mapState(['uuids']),
         methods: {
             async requestDevice() {
                 this.status = 'scanning';
 
                 try {
-                    this._beacon = await navigator.bluetooth.requestDevice({
+                    this.beacon = await navigator.bluetooth.requestDevice({
                         filters: [
                             { services: [this.uuids.eddystone] }
                         ]
                     });
 
                     this.status = 'connecting';
-                    await this._beacon.gatt.connect();
+                    await this.beacon.gatt.connect();
 
                     this.status = 'connected';
-                    this.$emit('beacon-change', this._beacon);
+                    this.$store.commit('setBeacon', this.beacon);
                 } catch (error) {
                     console.log(error);
                     this.status = 'default';
                 }
             },
             async disconnect() {
-                await this._beacon.gatt.disconnect();
+                await this.beacon.gatt.disconnect();
                 this.status = 'default';
-                this._beacon = null;
-                this.$emit('beacon-change', this._beacon);
+                this.beacon = null;
+                this.$store.commit('setBeacon', this.beacon);
             }
         }
     };
