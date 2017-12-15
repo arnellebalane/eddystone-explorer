@@ -3,7 +3,11 @@
         <div class="wrapper">
             <header>
                 <h2>Explore and configure your beacons that support Eddystone, an open beacon format from Google.</h2>
-                <beacon-connection v-bind:uuids="uuids"></beacon-connection>
+                <beacon-connection
+                    v-bind:beacon="beacon"
+                    v-bind:uuids="uuids"
+                    v-on:beacon-change="onBeaconChange">
+                </beacon-connection>
             </header>
         </div>
     </div>
@@ -15,6 +19,7 @@
     export default {
         data() {
             return {
+                beacon: null,
                 uuids: {
                     eddystone: 'a3c87500-8ed3-4bdf-8a39-a01bebede295',
                     capabilities: 'a3c87501-8ed3-4bdf-8a39-a01bebede295',
@@ -31,6 +36,16 @@
                     remainConnectable: 'a3c8750c-8ed3-4bdf-8a39-a01bebede295'
                 }
             };
+        },
+        watch: {
+            beacon(beacon) {
+                console.log(beacon);
+            }
+        },
+        methods: {
+            onBeaconChange(beacon) {
+                this.beacon = beacon;
+            }
         },
         components: {
             'beacon-connection': BeaconConnection

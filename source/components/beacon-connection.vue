@@ -9,11 +9,11 @@
             <button class="scanning">Scanning...</button>
         </template>
         <template v-else-if="status === 'connecting'">
-            <p>Connecting to "{{ beacon.name }}"</p>
+            <p>Connecting to "{{ _beacon.name }}"</p>
             <button class="connecting">Connecting...</button>
         </template>
         <template v-else-if="status === 'connected'">
-            <p>Connected to "{{ beacon.name }}"</p>
+            <p>Connected to "{{ _beacon.name }}"</p>
             <button class="connected" v-on:click="disconnect">Disconnect</button>
         </template>
     </div>
@@ -21,11 +21,11 @@
 
 <script>
     export default {
-        props: ['uuids'],
+        props: ['beacon', 'uuids'],
         data() {
             return {
                 status: 'default',
-                beacon: null
+                _beacon: null
             };
         },
         methods: {
@@ -33,26 +33,27 @@
                 this.status = 'scanning';
 
                 try {
-                    this.beacon = await navigator.bluetooth.requestDevice({
+                    this._beacon = await navigator.bluetooth.requestDevice({
                         filters: [
                             { services: [this.uuids.eddystone] }
                         ]
                     });
 
                     this.status = 'connecting';
-                    await this.beacon.gatt.connect();
+                    await this._beacon.gatt.connect();
 
                     this.status = 'connected';
-                    console.log(this.beacon);
+                    this.$emit('beacon-change', this._beacon);
                 } catch (error) {
                     console.log(error);
                     this.status = 'default';
                 }
             },
             async disconnect() {
-                await this.beacon.gatt.disconnect();
+                await this._beacon.gatt.disconnect();
                 this.status = 'default';
-                this.beacon = null;
+                this._beacon = null;
+                this.$emit('beacon-change', this._beacon);
             }
         }
     };
