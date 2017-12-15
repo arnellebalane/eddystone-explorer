@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/arnellebalane/eddystone-explorer#readme",
   "devDependencies": {
+    "css-loader": "0.28.7",
     "vue-loader": "13.5.0",
     "vue-template-compiler": "2.5.11",
     "webpack": "3.10.0"
