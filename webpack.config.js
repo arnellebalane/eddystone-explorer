@@ -4,6 +4,7 @@ module.exports = {
     entry: path.join(__dirname, 'source', 'index.js'),
     output: {
         path: path.join(__dirname, 'build'),
+        publicPath: '/build/',
         filename: 'index.js'
     },
     module: {
@@ -13,6 +14,9 @@ module.exports = {
         }, {
             test: /\.css$/,
             use: ['style-loader', 'css-loader']
+        }, {
+            test: /\.png$/,
+            use: 'file-loader'
         } ]
     }
 };
