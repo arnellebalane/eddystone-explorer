@@ -2,7 +2,7 @@
     <div class="beacon-connection">
         <template v-if="status === 'default'">
             <p>Not connected to any beacon</p>
-            <button class="default" v-on:click="requestDevice">Scan for beacons</button>
+            <button class="default" @click="requestDevice">Scan for beacons</button>
         </template>
         <template v-else-if="status === 'scanning'">
             <p>Searching for beacons with support for the Eddystone Configuration Service</p>
@@ -14,7 +14,7 @@
         </template>
         <template v-else-if="status === 'connected'">
             <p>Connected to "{{ beacon.name }}"</p>
-            <button class="connected" v-on:click="disconnect">Disconnect</button>
+            <button class="connected" @click="disconnect">Disconnect</button>
         </template>
     </div>
 </template>
@@ -22,12 +22,14 @@
 <script>
     export default {
         props: ['service'],
+
         data() {
             return {
                 status: 'default',
                 beacon: null
             };
         },
+
         methods: {
             async requestDevice() {
                 this.status = 'scanning';

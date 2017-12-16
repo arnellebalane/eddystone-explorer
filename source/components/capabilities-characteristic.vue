@@ -1,15 +1,15 @@
 <template>
-    <characteristic-template class="capabilities-characteristic" number="1" name="Capabilities" v-bind:loading="loading" v-bind:loaded="loaded">
+    <characteristic-template class="capabilities-characteristic" number="1" name="Capabilities" :loading="loading" :loaded="loaded">
         <section>
-            <characteristic-value label="Spec version" v-bind:value="data.specVersion"></characteristic-value>
-            <characteristic-value label="Max supported total slots" v-bind:value="data.maxSupportedTotalSlots"></characteristic-value>
-            <characteristic-value label="Max supported EID slots" v-bind:value="data.maxSupportedEidSlots"></characteristic-value>
-            <characteristic-value label="Variable ADV interval supported?" v-bind:value="data.variableAdvIntervalSupported"></characteristic-value>
-            <characteristic-value label="Variable Tx power supported?" v-bind:value="data.variableTxPowerSupported"></characteristic-value>
+            <characteristic-value label="Spec version" :value="data.specVersion"></characteristic-value>
+            <characteristic-value label="Max supported total slots" :value="data.maxSupportedTotalSlots"></characteristic-value>
+            <characteristic-value label="Max supported EID slots" :value="data.maxSupportedEidSlots"></characteristic-value>
+            <characteristic-value label="Variable ADV interval supported?" :value="data.variableAdvIntervalSupported"></characteristic-value>
+            <characteristic-value label="Variable Tx power supported?" :value="data.variableTxPowerSupported"></characteristic-value>
             <characteristic-value label="Supported frame types">
                 <items-availability>
                     <template v-for="item in data.supportedFrameTypes">
-                        <p v-bind:class="{available: item.available}">{{ item.name }}</p>
+                        <p :class="{available: item.available}">{{ item.name }}</p>
                     </template>
                 </items-availability>
             </characteristic-value>

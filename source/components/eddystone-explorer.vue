@@ -3,7 +3,7 @@
         <div class="wrapper">
             <header>
                 <h2>Explore and configure your beacons that support Eddystone, an open beacon format from Google.</h2>
-                <beacon-connection v-bind:service="uuids.eddystone"></beacon-connection>
+                <beacon-connection :service="uuids.eddystone"></beacon-connection>
             </header>
 
             <main v-if="beacon">

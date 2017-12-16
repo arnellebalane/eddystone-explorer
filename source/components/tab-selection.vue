@@ -7,6 +7,7 @@
 <script>
     export default {
         props: ['selected', 'selectedClass', 'loading'],
+
         watch: {
             selected(...args) {
                 this.onSelectedChange(...args);
@@ -15,6 +16,7 @@
                 this.classList[loading ? 'add' : 'remove']('loading');
             }
         },
+
         methods: {
             onSelectedChange(selected) {
                 // Placed here instead of in the watchers because watchers by
@@ -37,6 +39,7 @@
                 }
             }
         },
+
         mounted() {
             this.onSelectedChange(this.selected);
 

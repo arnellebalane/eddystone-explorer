@@ -1,9 +1,9 @@
 <template>
-    <article class="characteristic-template" v-bind:class="{'not-loaded': !loaded}">
+    <article class="characteristic-template" :class="{'not-loaded': !loaded}">
         <header>
             <span>{{ number }}</span>
             <h2>{{ name }}</h2>
-            <simple-spinner v-bind:show="loading"></simple-spinner>
+            <simple-spinner :show="loading"></simple-spinner>
         </header>
 
         <slot v-if="loaded"></slot>
@@ -15,6 +15,7 @@
 
     export default {
         props: ['number', 'name', 'loading', 'loaded'],
+
         components: {
             'simple-spinner': SimpleSpinner
         }

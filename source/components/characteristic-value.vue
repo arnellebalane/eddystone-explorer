@@ -2,23 +2,21 @@
     <div class="characteristic-value">
         <p class="label">{{ label }}</p>
 
-        <img v-if="value === true" v-bind:src="trueIcon" alt="true">
-        <img v-else-if="value === false" v-bind:src="falseIcon" alt="false">
+        <img v-if="value === true" :src="trueIcon" alt="true">
+        <img v-else-if="value === false" :src="falseIcon" alt="false">
         <p v-else-if="value !== undefined" class="value">{{ value }}</p>
         <slot v-else></slot>
     </div>
 </template>
 
 <script>
-    import check from '../images/check.png';
-    import close from '../images/close.png';
-
     export default {
         props: ['label', 'value'],
+
         data() {
             return {
-                trueIcon: check,
-                falseIcon: close
+                trueIcon: require('../images/check.png'),
+                falseIcon: require('../images/close.png')
             };
         }
     };
