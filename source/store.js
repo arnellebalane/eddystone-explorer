@@ -4,6 +4,7 @@ export default new Vuex.Store({
     state: {
         beacon: null,
         service: null,
+        data: {},
         uuids: {
             eddystone: 'a3c87500-8ed3-4bdf-8a39-a01bebede295',
             capabilities: 'a3c87501-8ed3-4bdf-8a39-a01bebede295',
@@ -27,6 +28,9 @@ export default new Vuex.Store({
         },
         setService(state, service) {
             state.service = service;
+        },
+        updateData(state, data) {
+            state.data = Object.assign({}, state.data, data);
         }
     }
 });
