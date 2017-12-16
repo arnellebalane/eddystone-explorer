@@ -20,6 +20,16 @@
 
     export default {
         computed: mapState(['beacon', 'uuids']),
+
+        watch: {
+            async beacon(beacon) {
+                const service = beacon
+                    ? await beacon.gatt.getPrimaryService(this.uuids.eddystone)
+                    : null;
+                this.$store.commit('setService', service);
+            }
+        },
+
         components: {
             'beacon-connection': BeaconConnection,
             'capabilities-characteristic': CapabilitiesCharacteristic
