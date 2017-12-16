@@ -5,6 +5,7 @@
         <img v-if="value === true" v-bind:src="trueIcon" alt="true">
         <img v-else-if="value === false" v-bind:src="falseIcon" alt="false">
         <p v-else-if="value !== undefined" class="value">{{ value }}</p>
+        <slot v-else></slot>
     </div>
 </template>
 
