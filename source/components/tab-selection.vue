@@ -45,7 +45,8 @@
 
             this.$refs.element.addEventListener('click', (e) => {
                 if (e.target.value) {
-                    this.$emit('selected-changed', e.target.value);
+                    const selected = this.attemptParseValue(e.target.value);
+                    this.$emit('selected-changed', selected);
                 }
             });
         }
