@@ -10,13 +10,18 @@ module.exports = {
     module: {
         rules: [ {
             test: /\.vue$/,
-            use: 'vue-loader'
+            loader: 'vue-loader',
+            options: {
+                loaders: {
+                    js: 'babel-loader'
+                }
+            }
         }, {
             test: /\.css$/,
             use: ['style-loader', 'css-loader']
         }, {
             test: /\.png$/,
-            use: 'file-loader'
+            loader: 'file-loader'
         } ]
     }
 };
