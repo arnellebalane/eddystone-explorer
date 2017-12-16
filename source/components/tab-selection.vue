@@ -9,9 +9,7 @@
         props: ['selected', 'selectedClass', 'loading'],
 
         watch: {
-            selected(...args) {
-                this.onSelectedChange(...args);
-            },
+            selected: 'onSelectedChange',
             loading(loading) {
                 this.classList[loading ? 'add' : 'remove']('loading');
             }
