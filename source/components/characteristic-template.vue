@@ -1,12 +1,12 @@
 <template>
-    <article class="characteristic-template">
+    <article class="characteristic-template" v-bind:class="{'not-loaded': !loaded}">
         <header>
             <span>{{ number }}</span>
             <h2>{{ name }}</h2>
             <simple-spinner v-bind:show="loading"></simple-spinner>
         </header>
 
-        <slot></slot>
+        <slot v-if="loaded"></slot>
     </article>
 </template>
 
@@ -14,7 +14,7 @@
     import SimpleSpinner from './simple-spinner.vue';
 
     export default {
-        props: ['number', 'name', 'loading'],
+        props: ['number', 'name', 'loading', 'loaded'],
         components: {
             'simple-spinner': SimpleSpinner
         }
@@ -29,6 +29,10 @@
     article {
         padding-bottom: 1.6rem;
         background-color: rgba(255, 255, 255, 0.05);
+    }
+
+    article.not-loaded {
+        padding-bottom: 0;
     }
 
     header {
