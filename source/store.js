@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 export default new Vuex.Store({
     state: {
         beacon: null,
+        service: null,
         uuids: {
             eddystone: 'a3c87500-8ed3-4bdf-8a39-a01bebede295',
             capabilities: 'a3c87501-8ed3-4bdf-8a39-a01bebede295',
@@ -23,6 +24,9 @@ export default new Vuex.Store({
     mutations: {
         setBeacon(state, beacon) {
             state.beacon = beacon;
+        },
+        setService(state, service) {
+            state.service = service;
         }
     }
 });
