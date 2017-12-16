@@ -1,0 +1,20 @@
+section:not(:first-of-type) {
+    margin-top: 1.6rem;
+}
+
+section:not(:last-of-type) {
+    margin-bottom: 1.6rem;
+}
+
+section.padded {
+    padding: 0 4.2rem;
+}
+
+section.flex {
+    display: flex;
+    align-items: flex-start;
+}
+
+section.flex .messages {
+    margin-right: 4.2rem;
+}
