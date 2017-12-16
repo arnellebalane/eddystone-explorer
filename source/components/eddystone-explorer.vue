@@ -5,11 +5,11 @@
                 <h2>Explore and configure your beacons that support Eddystone, an open beacon format from Google.</h2>
                 <beacon-connection v-bind:service="uuids.eddystone"></beacon-connection>
             </header>
-        </div>
 
-        <main v-if="beacon">
-            <capabilities-characteristic></capabilities-characteristic>
-        </main>
+            <main v-if="beacon">
+                <capabilities-characteristic></capabilities-characteristic>
+            </main>
+        </div>
     </div>
 </template>
 
