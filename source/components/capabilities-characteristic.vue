@@ -110,4 +110,4 @@
     };
 </script>
 
-<style src="../stylesheets/characteristics.css"></style>
+<style scoped src="../stylesheets/characteristics.css"></style>

@@ -82,5 +82,5 @@
     };
 </script>
 
-<style src="../stylesheets/buttons.css"></style>
-<style src="../stylesheets/characteristics.css"></style>
+<style scoped src="../stylesheets/buttons.css"></style>
+<style scoped src="../stylesheets/characteristics.css"></style>
