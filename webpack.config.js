@@ -7,6 +7,7 @@ module.exports = {
         publicPath: '/build/',
         filename: 'index.js'
     },
+    devtool: 'source-map',
     module: {
         rules: [ {
             test: /\.vue$/,
