@@ -3,7 +3,11 @@
         <section>
             <characteristic-value label="Advertising Interval">
                 <value-with-unit unit="ms">
-                    <flexible-input ref="input" :value="advertisingInterval" @value-changed="onAdvertisingIntervalChanged"></flexible-input>
+                    <flexible-input
+                        ref="input"
+                        :value="advertisingInterval"
+                        @value-changed="onAdvertisingIntervalChanged">
+                    </flexible-input>
                 </value-with-unit>
             </characteristic-value>
         </section>
