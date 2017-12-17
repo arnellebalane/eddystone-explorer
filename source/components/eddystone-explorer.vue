@@ -9,6 +9,7 @@
             <main v-if="beacon">
                 <capabilities-characteristic></capabilities-characteristic>
                 <active-slot-characteristic></active-slot-characteristic>
+                <advertising-interval-characteristic></advertising-interval-characteristic>
             </main>
         </div>
     </div>
@@ -19,6 +20,7 @@
     import BeaconConnection from './beacon-connection.vue';
     import CapabilitiesCharacteristic from './capabilities-characteristic.vue';
     import ActiveSlotCharacteristic from './active-slot-characteristic.vue';
+    import AdvertisingIntervalCharacteristic from './advertising-interval-characteristic.vue';
 
     export default {
         computed: mapState(['beacon', 'uuids']),
@@ -35,7 +37,8 @@
         components: {
             'beacon-connection': BeaconConnection,
             'capabilities-characteristic': CapabilitiesCharacteristic,
-            'active-slot-characteristic': ActiveSlotCharacteristic
+            'active-slot-characteristic': ActiveSlotCharacteristic,
+            'advertising-interval-characteristic': AdvertisingIntervalCharacteristic
         }
     };
 </script>
