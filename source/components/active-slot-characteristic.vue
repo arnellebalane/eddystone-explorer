@@ -38,13 +38,7 @@
             async activeSlot(activeSlot, oldValue) {
                 if (activeSlot === undefined) return;
                 if (oldValue === null) return;
-                this.loading = true;
-
-                const binaryData = new Uint8Array([activeSlot]);
-                await this.characteristic.writeValue(binaryData);
-
-                this.$store.commit('updateData', { activeSlot });
-                this.loading = false;
+                await this.writeActiveSlot();
             }
         },
 
@@ -68,6 +62,18 @@
             },
             onActiveSlotChanged(activeSlot) {
                 this.activeSlot = activeSlot;
+            },
+            async writeActiveSlot() {
+                if (!this.characteristic) return;
+                if (this.loading && this.loaded) return;
+                this.loading = true;
+
+                const activeSlot = this.activeSlot;
+                const binaryData = new Uint8Array([activeSlot]);
+                await this.characteristic.writeValue(binaryData);
+                this.$store.commit('updateData', { activeSlot });
+
+                this.loading = false;
             }
         },
 

@@ -83,11 +83,10 @@
                 if (this.loading && this.loaded) return;
                 this.loading = true;
 
-                const binaryData = new Int8Array([this.advertisedTxPower]);
+                const advertisedTxPower = this.advertisedTxPower;
+                const binaryData = new Int8Array([advertisedTxPower]);
                 await this.characteristic.writeValue(binaryData);
-
-                const data = { advertisedTxPower: this.advertisedTxPower };
-                this.$store.commit('updateData', data);
+                this.$store.commit('updateData', { advertisedTxPower });
 
                 this.loading = false;
             }

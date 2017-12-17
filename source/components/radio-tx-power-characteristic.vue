@@ -46,13 +46,7 @@
             async radioTxPower(radioTxPower, oldValue) {
                 if (radioTxPower === undefined) return;
                 if (oldValue === null) return;
-                this.loading = true;
-
-                const binaryData = new Int8Array([radioTxPower]);
-                await this.characteristic.writeValue(binaryData);
-                this.$store.commit('updateData', { radioTxPower });
-
-                this.loading = false;
+                await this.writeRadioTxPower();
             }
         },
 
@@ -67,6 +61,7 @@
             },
             async updateRadioTxPower() {
                 if (!this.characteristic) return;
+                if (this.loading && this.loaded) return;
                 this.loading = true;
 
                 const binaryData = await this.characteristic.readValue();
@@ -78,6 +73,18 @@
             },
             onRadioTxPowerChanged(radioTxPower) {
                 this.radioTxPower = radioTxPower;
+            },
+            async writeRadioTxPower() {
+                if (!this.characteristic) return;
+                if (this.loading && this.loaded) return;
+                this.loading = true;
+
+                const radioTxPower = this.radioTxPower;
+                const binaryData = new Int8Array([radioTxPower]);
+                await this.characteristic.writeValue(binaryData);
+                this.$store.commit('updateData', { radioTxPower });
+
+                this.loading = false;
             }
         },
 

@@ -64,6 +64,7 @@
             },
             async updateAdvertisingInterval() {
                 if (!this.characteristic) return;
+                if (this.loading && this.loaded) return;
                 this.loading = true;
 
                 const binaryData = await this.characteristic.readValue();
@@ -78,14 +79,14 @@
             },
             async writeAdvertisingInterval() {
                 if (!this.characteristic) return;
+                if (this.loading && this.loaded) return;
                 this.loading = true;
 
+                const advertisingInterval = this.advertisingInterval;
                 const binaryData = new ArrayBuffer(2);
-                new DataView(binaryData).setUint16(0, this.advertisingInterval);
+                new DataView(binaryData).setUint16(0, advertisingInterval);
                 await this.characteristic.writeValue(binaryData);
-
-                const data = { advertisingInterval: this.advertisingInterval };
-                this.$store.commit('updateData', data);
+                this.$store.commit('updateData', { advertisingInterval });
 
                 this.loading = false;
             }
