@@ -19,14 +19,18 @@
 
 <script>
     import { mapState } from 'vuex';
+    import DependenciesMixin from '../mixins/dependencies-mixin';
     import CharacteristicTemplate from './characteristic-template.vue';
     import CharacteristicValue from './characteristic-value.vue';
     import FlexibleInput from './flexible-input.vue';
     import ValueWithUnit from './value-with-unit.vue';
 
     export default {
+        mixins: [DependenciesMixin],
+
         data() {
             return {
+                dependencies: ['service', 'data.activeSlot'],
                 characteristic: null,
                 loading: true,
                 loaded: false,
@@ -43,21 +47,11 @@
         },
 
         watch: {
-            service(service) {
-                this.initialize(service, this.data.activeSlot);
-            },
-            'data.activeSlot'(activeSlot) {
-                this.initialize(this.service, activeSlot);
-                this.updateAdvertisingInterval();
-            }
+            'data.activeSlot': 'updateAdvertisingInterval'
         },
 
         methods: {
             async initialize(service, activeSlot) {
-                if (!service) return;
-                if (typeof activeSlot !== 'number') return;
-                if (this.characteristic) return;
-
                 this.characteristic = await service.getCharacteristic(this.uuids.advertisingInterval);
                 await this.updateAdvertisingInterval();
 

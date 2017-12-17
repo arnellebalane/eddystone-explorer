@@ -14,12 +14,16 @@
 
 <script>
     import { mapState } from 'vuex';
+    import DependenciesMixin from '../mixins/dependencies-mixin';
     import CharacteristicTemplate from './characteristic-template.vue';
     import TabSelection from './tab-selection.vue';
 
     export default {
+        mixins: [DependenciesMixin],
+
         data() {
             return {
+                dependencies: ['service', 'data.supportedRadioTxPowers', 'data.activeSlot'],
                 characteristic: null,
                 loading: true,
                 loaded: false,
@@ -37,16 +41,8 @@
         },
 
         watch: {
-            service(service) {
-                this.initialize(service, this.data.supportedRadioTxPowers);
-            },
-            'data.supportedRadioTxPowers'(supportedRadioTxPowers) {
-                this.initialize(this.service, supportedRadioTxPowers);
-            },
-            'data.activeSlot'(activeSlot) {
-                this.initialize(this.service, this.data.supportedRadioTxPowers);
-                this.updateRadioTxPower();
-            },
+            'data.activeSlot': 'updateRadioTxPower',
+
             async radioTxPower(radioTxPower, oldValue) {
                 if (radioTxPower === undefined) return;
                 if (oldValue === null) return;
@@ -61,11 +57,7 @@
         },
 
         methods: {
-            async initialize(service, supportedRadioTxPowers) {
-                if (!service) return;
-                if (!supportedRadioTxPowers) return;
-                if (this.characteristic) return;
-
+            async initialize(service, supportedRadioTxPowers, activeSlot) {
                 this.characteristic = await service.getCharacteristic(this.uuids.radioTxPower);
                 this.radioTxPowers = supportedRadioTxPowers;
                 await this.updateRadioTxPower();

@@ -14,12 +14,16 @@
 
 <script>
     import { mapState } from 'vuex';
+    import DependenciesMixin from '../mixins/dependencies-mixin';
     import CharacteristicTemplate from './characteristic-template.vue';
     import TabSelection from './tab-selection.vue';
 
     export default {
+        mixins: [DependenciesMixin],
+
         data() {
             return {
+                dependencies: ['service', 'data.maxSupportedTotalSlots'],
                 characteristic: null,
                 loading: true,
                 loaded: false,
@@ -31,12 +35,6 @@
         computed: mapState(['service', 'uuids', 'data']),
 
         watch: {
-            service(service) {
-                this.initialize(service, this.data.maxSupportedTotalSlots);
-            },
-            'data.maxSupportedTotalSlots'(maxSupportedTotalSlots) {
-                this.initialize(this.service, maxSupportedTotalSlots);
-            },
             async activeSlot(activeSlot, oldValue) {
                 if (activeSlot === undefined) return;
                 if (oldValue === null) return;
@@ -52,10 +50,6 @@
 
         methods: {
             async initialize(service, maxSupportedTotalSlots) {
-                if (!service) return;
-                if (typeof maxSupportedTotalSlots !== 'number') return;
-                if (this.characteristic) return;
-
                 this.characteristic = await service.getCharacteristic(this.uuids.activeSlot);
                 const binaryData = await this.characteristic.readValue();
 
