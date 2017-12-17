@@ -12,6 +12,7 @@
                 <advertising-interval-characteristic></advertising-interval-characteristic>
                 <radio-tx-power-characteristic></radio-tx-power-characteristic>
                 <advertised-tx-power-characteristic></advertised-tx-power-characteristic>
+                <lock-state-characteristic></lock-state-characteristic>
                 <public-ecdh-key-characteristic></public-ecdh-key-characteristic>
                 <eid-identity-key-characteristic></eid-identity-key-characteristic>
             </main>
@@ -27,6 +28,7 @@
     import AdvertisingIntervalCharacteristic from './advertising-interval-characteristic.vue';
     import RadioTxPowerCharacteristic from './radio-tx-power-characteristic.vue';
     import AdvertisedTxPowerCharacteristic from './advertised-tx-power-characteristic.vue';
+    import LockStateCharacteristic from './lock-state-characteristic.vue';
     import PublicECDHKeyCharacteristic from './public-ecdh-key-characteristic.vue';
     import EIDIdentityKeyCharacteristic from './eid-identity-key-characteristic.vue';
 
@@ -49,6 +51,7 @@
             'advertising-interval-characteristic': AdvertisingIntervalCharacteristic,
             'radio-tx-power-characteristic': RadioTxPowerCharacteristic,
             'advertised-tx-power-characteristic': AdvertisedTxPowerCharacteristic,
+            'lock-state-characteristic': LockStateCharacteristic,
             'public-ecdh-key-characteristic': PublicECDHKeyCharacteristic,
             'eid-identity-key-characteristic': EIDIdentityKeyCharacteristic
         }
