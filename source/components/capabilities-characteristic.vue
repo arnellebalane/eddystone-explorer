@@ -15,7 +15,7 @@
             </characteristic-value>
             <characteristic-value label="Supported radio Tx power">
                 <value-with-unit unit="dBm">
-                    <p>{{ data.supportedRadioTxPowers }}</p>
+                    <p>{{ supportedRadioTxPowers }}</p>
                 </value-with-unit>
             </characteristic-value>
         </section>
@@ -38,7 +38,15 @@
             };
         },
 
-        computed: mapState(['service', 'uuids', 'data']),
+        computed: {
+            ...mapState(['service', 'uuids', 'data']),
+
+            supportedRadioTxPowers() {
+                return this.data.supportedRadioTxPowers
+                    ? this.data.supportedRadioTxPowers.join(', ')
+                    : null;
+            }
+        },
 
         watch: {
             async service(service) {
@@ -97,7 +105,7 @@
                 for (let i = 6; i < binaryData.byteLength; i++) {
                     radioTxPowers.push(binaryData.getInt8(i));
                 }
-                return radioTxPowers.join(', ');
+                return radioTxPowers;
             }
         },
 
