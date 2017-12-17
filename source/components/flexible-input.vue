@@ -15,6 +15,9 @@
         },
 
         watch: {
+            value(value) {
+                this.inputValue = value;
+            },
             inputValue(inputValue) {
                 this.updateInputWidth();
                 this.$emit('value-changed', inputValue);
