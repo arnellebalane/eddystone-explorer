@@ -34,14 +34,6 @@
 
         computed: mapState(['service', 'uuids', 'data']),
 
-        watch: {
-            async activeSlot(activeSlot, oldValue) {
-                if (activeSlot === undefined) return;
-                if (oldValue === null) return;
-                await this.writeActiveSlot();
-            }
-        },
-
         methods: {
             async initialize(service, maxSupportedTotalSlots) {
                 this.characteristic = await service.getCharacteristic(this.uuids.activeSlot);
@@ -60,8 +52,9 @@
                 this.loading = false;
                 this.loaded = true;
             },
-            onActiveSlotChanged(activeSlot) {
+            async onActiveSlotChanged(activeSlot) {
                 this.activeSlot = activeSlot;
+                await this.writeActiveSlot();
             },
             async writeActiveSlot() {
                 if (!this.characteristic) return;

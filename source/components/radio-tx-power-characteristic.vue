@@ -41,13 +41,7 @@
         },
 
         watch: {
-            'data.activeSlot': 'updateRadioTxPower',
-
-            async radioTxPower(radioTxPower, oldValue) {
-                if (radioTxPower === undefined) return;
-                if (oldValue === null) return;
-                await this.writeRadioTxPower();
-            }
+            'data.activeSlot': 'updateRadioTxPower'
         },
 
         methods: {
@@ -71,8 +65,9 @@
 
                 this.loading = false;
             },
-            onRadioTxPowerChanged(radioTxPower) {
+            async onRadioTxPowerChanged(radioTxPower) {
                 this.radioTxPower = radioTxPower;
+                await this.writeRadioTxPower();
             },
             async writeRadioTxPower() {
                 if (!this.characteristic) return;
