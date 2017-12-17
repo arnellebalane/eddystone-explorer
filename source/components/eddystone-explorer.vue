@@ -11,6 +11,7 @@
                 <active-slot-characteristic></active-slot-characteristic>
                 <advertising-interval-characteristic></advertising-interval-characteristic>
                 <radio-tx-power-characteristic></radio-tx-power-characteristic>
+                <advertised-tx-power-characteristic></advertised-tx-power-characteristic>
             </main>
         </div>
     </div>
@@ -23,6 +24,7 @@
     import ActiveSlotCharacteristic from './active-slot-characteristic.vue';
     import AdvertisingIntervalCharacteristic from './advertising-interval-characteristic.vue';
     import RadioTxPowerCharacteristic from './radio-tx-power-characteristic.vue';
+    import AdvertisedTxPowerCharacteristic from './advertised-tx-power-characteristic.vue';
 
     export default {
         computed: mapState(['beacon', 'uuids']),
@@ -41,7 +43,8 @@
             'capabilities-characteristic': CapabilitiesCharacteristic,
             'active-slot-characteristic': ActiveSlotCharacteristic,
             'advertising-interval-characteristic': AdvertisingIntervalCharacteristic,
-            'radio-tx-power-characteristic': RadioTxPowerCharacteristic
+            'radio-tx-power-characteristic': RadioTxPowerCharacteristic,
+            'advertised-tx-power-characteristic': AdvertisedTxPowerCharacteristic
         }
     };
 </script>
