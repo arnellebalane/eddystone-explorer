@@ -1,7 +1,7 @@
 <template>
     <characteristic-template class="active-slot-characteristic" number="2" name="Active Slot" :loading="loading" :loaded="loaded">
         <section class="padded">
-            <tab-selection :selected="data.activeSlot" selected-class="success" :loading="loading" @selected-changed="onActiveSlotChanged">
+            <tab-selection :selected="activeSlot" selected-class="success" :loading="loading" @selected-changed="onActiveSlotChanged">
                 <button v-for="slot in slots" :value="slot.value">{{ slot.label }}</button>
             </tab-selection>
         </section>
@@ -23,6 +23,7 @@
                 characteristic: null,
                 loading: true,
                 loaded: false,
+                activeSlot: null,
                 slots: []
             };
         },
@@ -36,14 +37,15 @@
             'data.maxSupportedTotalSlots'(maxSupportedTotalSlots) {
                 this.initialize(this.service, maxSupportedTotalSlots);
             },
-            async 'data.activeSlot'(activeSlot) {
+            async activeSlot(activeSlot, oldValue) {
                 if (activeSlot === undefined) return;
+                if (oldValue === null) return;
                 this.loading = true;
 
                 const binaryData = new Uint8Array([activeSlot]);
                 await this.characteristic.writeValue(binaryData);
 
-                this.$emit('active-slot-changed', activeSlot);
+                this.$store.commit('updateData', { activeSlot });
                 this.loading = false;
             }
         },
@@ -63,15 +65,15 @@
                 }
                 this.slots = slots;
 
-                const data = { activeSlot: binaryData.getUint8(0) };
-                this.$store.commit('updateData', data);
+                const activeSlot = binaryData.getUint8(0);
+                this.activeSlot = activeSlot;
+                this.$store.commit('updateData', { activeSlot });
 
                 this.loading = false;
                 this.loaded = true;
             },
             onActiveSlotChanged(activeSlot) {
-                const data = { activeSlot };
-                this.$store.commit('updateData', data);
+                this.activeSlot = activeSlot;
             }
         },
 
