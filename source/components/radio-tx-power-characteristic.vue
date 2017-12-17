@@ -42,6 +42,10 @@
             },
             'data.supportedRadioTxPowers'(supportedRadioTxPowers) {
                 this.initialize(this.service, supportedRadioTxPowers);
+            },
+            'data.activeSlot'(activeSlot) {
+                this.initialize(this.service, this.data.supportedRadioTxPowers);
+                this.updateRadioTxPower();
             }
         },
 
