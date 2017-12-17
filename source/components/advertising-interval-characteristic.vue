@@ -3,7 +3,7 @@
         <section>
             <characteristic-value label="Advertising Interval">
                 <value-with-unit unit="ms">
-                    <flexible-input ref="input" :value="advertisingInterval"></flexible-input>
+                    <flexible-input ref="input" :value="advertisingInterval" @value-changed="onAdvertisingIntervalChanged"></flexible-input>
                 </value-with-unit>
             </characteristic-value>
         </section>
@@ -12,7 +12,7 @@
                 <p v-if="data.variableAdvIntervalSupported">Writing a value to this characteristic will set the advertising interval for <strong>{{ activeSlotLabel }}</strong>.</p>
                 <p v-else class="warning">Because <strong>variable ADV interval</strong> is not supported, writing a value to this characteristic will set the advertising interval for all slots.</p>
             </div>
-            <button class="info">Update</button>
+            <button class="info" @click="writeAdvertisingInterval">Update</button>
         </section>
     </characteristic-template>
 </template>
@@ -72,6 +72,22 @@
                 const advertisingInterval = binaryData.getUint16(0);
                 this.advertisingInterval = advertisingInterval;
                 this.$store.commit('updateData', { advertisingInterval });
+
+                this.loading = false;
+            },
+            onAdvertisingIntervalChanged(advertisingInterval) {
+                this.advertisingInterval = parseInt(advertisingInterval, 10);
+            },
+            async writeAdvertisingInterval() {
+                if (!this.characteristic) return;
+                this.loading = true;
+
+                const binaryData = new ArrayBuffer(2);
+                new DataView(binaryData).setUint16(0, this.advertisingInterval);
+                await this.characteristic.writeValue(binaryData);
+
+                const data = { advertisingInterval: this.advertisingInterval };
+                this.$store.commit('updateData', data);
 
                 this.loading = false;
             }
