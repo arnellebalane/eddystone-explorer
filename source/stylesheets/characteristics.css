@@ -18,3 +18,29 @@ section.flex {
 section.flex .messages {
     margin-right: 4.2rem;
 }
+
+.messages p {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 1.2rem;
+    opacity: 0.5;
+}
+
+p.success {
+    color: var(--success-color);
+    opacity: 1;
+}
+
+p.info {
+    color: var(--info-color);
+    opacity: 1;
+}
+
+p.warning {
+    color: var(--warning-color);
+}
+
+p.danger {
+    color: var(--danger-color);
+    opacity: 1;
+}

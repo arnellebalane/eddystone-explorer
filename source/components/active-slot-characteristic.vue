@@ -5,6 +5,10 @@
                 <button v-for="slot in slots" :value="slot.value">{{ slot.label }}</button>
             </tab-selection>
         </section>
+        <section class="padded messages">
+            <p>Number of slots is based on <strong>Max supported total slots</strong>capability.</p>
+            <p>Subsequent writes to other characteristics will act on the active slot.</p>
+        </section>
     </characteristic-template>
 </template>
 
