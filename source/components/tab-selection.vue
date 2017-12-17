@@ -11,7 +11,7 @@
         watch: {
             selected: 'onSelectedChange',
             loading(loading) {
-                this.classList[loading ? 'add' : 'remove']('loading');
+                this.$refs.element.classList[loading ? 'add' : 'remove']('loading');
             }
         },
 
