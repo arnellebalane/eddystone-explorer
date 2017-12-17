@@ -22,7 +22,7 @@
                     const byte = data.getUint8(i).toString(16).padStart(2, '0');
                     bytes[row][i % bytesPerRow] = byte;
                 }
-                return bytes.reverse();
+                return bytes;
             }
         },
 
