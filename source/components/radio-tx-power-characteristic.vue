@@ -1,7 +1,7 @@
 <template>
     <characteristic-template class="radio-tx-power-characteristic" number="4" name="Radio Tx Power" :loading="loading" :loaded="loaded">
         <section class="padded">
-            <tab-selection :selected="radioTxPower" selected-class="success" :loading="loading">
+            <tab-selection :selected="radioTxPower" selected-class="success" :loading="loading" @selected-changed="onRadioTxPowerChanged">
                 <button v-for="item in radioTxPowers" :value="item">{{ item }} dBm</button>
             </tab-selection>
         </section>
@@ -46,6 +46,17 @@
             'data.activeSlot'(activeSlot) {
                 this.initialize(this.service, this.data.supportedRadioTxPowers);
                 this.updateRadioTxPower();
+            },
+            async radioTxPower(radioTxPower, oldValue) {
+                if (radioTxPower === undefined) return;
+                if (oldValue === null) return;
+                this.loading = true;
+
+                const binaryData = new Int8Array([radioTxPower]);
+                await this.characteristic.writeValue(binaryData);
+                this.$store.commit('updateData', { radioTxPower });
+
+                this.loading = false;
             }
         },
 
@@ -72,6 +83,9 @@
                 this.$store.commit('updateData', { radioTxPower });
 
                 this.loading = false;
+            },
+            onRadioTxPowerChanged(radioTxPower) {
+                this.radioTxPower = radioTxPower;
             }
         },
 
