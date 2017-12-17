@@ -8,6 +8,7 @@
 
             <main v-if="beacon">
                 <capabilities-characteristic></capabilities-characteristic>
+                <active-slot-characteristic></active-slot-characteristic>
             </main>
         </div>
     </div>
@@ -17,6 +18,7 @@
     import { mapState } from 'vuex';
     import BeaconConnection from './beacon-connection.vue';
     import CapabilitiesCharacteristic from './capabilities-characteristic.vue';
+    import ActiveSlotCharacteristic from './active-slot-characteristic.vue';
 
     export default {
         computed: mapState(['beacon', 'uuids']),
@@ -32,7 +34,8 @@
 
         components: {
             'beacon-connection': BeaconConnection,
-            'capabilities-characteristic': CapabilitiesCharacteristic
+            'capabilities-characteristic': CapabilitiesCharacteristic,
+            'active-slot-characteristic': ActiveSlotCharacteristic
         }
     };
 </script>
