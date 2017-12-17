@@ -13,6 +13,7 @@
                 <radio-tx-power-characteristic></radio-tx-power-characteristic>
                 <advertised-tx-power-characteristic></advertised-tx-power-characteristic>
                 <public-ecdh-key-characteristic></public-ecdh-key-characteristic>
+                <eid-identity-key-characteristic></eid-identity-key-characteristic>
             </main>
         </div>
     </div>
@@ -27,6 +28,7 @@
     import RadioTxPowerCharacteristic from './radio-tx-power-characteristic.vue';
     import AdvertisedTxPowerCharacteristic from './advertised-tx-power-characteristic.vue';
     import PublicECDHKeyCharacteristic from './public-ecdh-key-characteristic.vue';
+    import EIDIdentityKeyCharacteristic from './eid-identity-key-characteristic.vue';
 
     export default {
         computed: mapState(['beacon', 'uuids']),
@@ -47,7 +49,8 @@
             'advertising-interval-characteristic': AdvertisingIntervalCharacteristic,
             'radio-tx-power-characteristic': RadioTxPowerCharacteristic,
             'advertised-tx-power-characteristic': AdvertisedTxPowerCharacteristic,
-            'public-ecdh-key-characteristic': PublicECDHKeyCharacteristic
+            'public-ecdh-key-characteristic': PublicECDHKeyCharacteristic,
+            'eid-identity-key-characteristic': EIDIdentityKeyCharacteristic
         }
     };
 </script>
