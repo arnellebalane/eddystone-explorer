@@ -1,5 +1,5 @@
 <template>
-    <characteristic-template class="advertising-interval-characteristic" number="2" name="Advertising Interval" :loading="loading" :loaded="loaded">
+    <characteristic-template class="advertising-interval-characteristic" number="3" name="Advertising Interval" :loading="loading" :loaded="loaded">
         <section>
             <characteristic-value label="Advertising Interval">
                 <value-with-unit unit="ms">
