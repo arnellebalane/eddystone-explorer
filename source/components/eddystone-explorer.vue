@@ -12,6 +12,7 @@
                 <advertising-interval-characteristic></advertising-interval-characteristic>
                 <radio-tx-power-characteristic></radio-tx-power-characteristic>
                 <advertised-tx-power-characteristic></advertised-tx-power-characteristic>
+                <public-ecdh-key-characteristic></public-ecdh-key-characteristic>
             </main>
         </div>
     </div>
@@ -25,6 +26,7 @@
     import AdvertisingIntervalCharacteristic from './advertising-interval-characteristic.vue';
     import RadioTxPowerCharacteristic from './radio-tx-power-characteristic.vue';
     import AdvertisedTxPowerCharacteristic from './advertised-tx-power-characteristic.vue';
+    import PublicECDHKeyCharacteristic from './public-ecdh-key-characteristic.vue';
 
     export default {
         computed: mapState(['beacon', 'uuids']),
@@ -44,7 +46,8 @@
             'active-slot-characteristic': ActiveSlotCharacteristic,
             'advertising-interval-characteristic': AdvertisingIntervalCharacteristic,
             'radio-tx-power-characteristic': RadioTxPowerCharacteristic,
-            'advertised-tx-power-characteristic': AdvertisedTxPowerCharacteristic
+            'advertised-tx-power-characteristic': AdvertisedTxPowerCharacteristic,
+            'public-ecdh-key-characteristic': PublicECDHKeyCharacteristic
         }
     };
 </script>
